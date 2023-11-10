@@ -1,22 +1,22 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from "../Screens/Login";
+import Register from "../Screens/Register";
 
 
-//NAVIGATION - list of login screens 
-const AuthNav = createStackNavigator();
+const Stack = createStackNavigator();
 
-function MyStack() {
+export default function AuthNav(){
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-    </Stack.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Registration" component={Register} />
+      </Stack.Navigator>
   );
 }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <MyStack />
-    </NavigationContainer>
-  );
-}
+  
+
+  
+
+
+    
