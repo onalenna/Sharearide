@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
-export default class Buses extends React.Component {
+export default class Settings extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class Buses extends React.Component {
 
 
             <View style={styles.container}>
-                <Text>This is the BUSES screen</Text>     
+                <Text>This is the SETTINGS screen</Text>     
             </View>
 
         )
