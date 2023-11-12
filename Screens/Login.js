@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput} from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, KeyboardAvoidingView} from "react-native";
+import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-// const navigation = useNavigation()
+
 
 export default class Login extends React.Component {
 
@@ -15,11 +17,17 @@ export default class Login extends React.Component {
         }
     }
 
+    signup(){
+        return(
+            <Text style={{ fontSize: 15, color: '#429588', fontWeight: 'bold' }}> Sign up here </Text>
+        )
+    }
     render() {
+        
         return (
 
 
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container}>
                 <View style={styles.top}>
                     <Image style={styles.logo} source={require('../assets/logo.png')}/>
                 </View>  
@@ -42,7 +50,7 @@ export default class Login extends React.Component {
                     </View>
                     
                     <View style={styles.midbtn}>
-                        <Pressable style={styles.btn}>
+                        <Pressable onPress={() => this.props.navigation.navigate('Landing')} style={styles.btn}>
                             <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>SIGN IN</Text>
                         </Pressable>
                     </View>
@@ -61,14 +69,23 @@ export default class Login extends React.Component {
                         </View>
                     </View>
                     <View style={styles.bot2}>
-
+                        <View style={styles.social}>
+                            <FontAwesome5 name="facebook" size={50} color="#1877F2" />
+                        </View>
+                        <View style={styles.social}>
+                            <FontAwesome name="google" size={50} color="#DB4437"/>
+                        </View>
+                        <View style={styles.social}>
+                            <FontAwesome name="twitter" size={50} color="#1DA1F2"/>
+                        </View>
                     </View>
-                    <View style={styles.bot3}>
 
+                    <View style={styles.bot3}>
+                        <Text onPress={() => this.props.navigation.navigate('Registration')}>Don't have an account? {this.signup()}</Text>
                     </View>
 
                 </View> 
-            </View>
+            </KeyboardAvoidingView>
 
         )
     }
@@ -86,20 +103,20 @@ const styles = StyleSheet.create({
 
     top: {
         //backgroundColor: '#c1c1c1',
-        height: 145,
+        height: '20%',
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     logo: {
-        height: '48%',
+        height: 80,
         width: '77%',
     },
 
     mid: {
         //backgroundColor: '#FA8072',
-        height: 370,
+        height: '40%',
         width: '100%',
     },
 
@@ -107,8 +124,7 @@ const styles = StyleSheet.create({
         //backgroundColor: 'blue',
         height: '20%',
         width: '100%',
-        paddingLeft: 28,
-        paddingTop: 15,
+        paddingLeft: '14%',
     },
 
     midfld: {
@@ -150,17 +166,17 @@ const styles = StyleSheet.create({
     },
 
     btn: {
-         height: 48,
-         width: 305,
-         borderRadius: 24,
-         backgroundColor: '#FA8072',
-         justifyContent: 'center',
+        height: 48,
+        width: 305,
+        borderRadius: 24,
+        backgroundColor: '#FA8072',
+        justifyContent: 'center',
         alignItems: 'center',
     },
 
     bot: {
         //backgroundColor: '#429588',
-        height: 215,
+        height: '40%',
         width: '100%',
     },
 
@@ -180,14 +196,25 @@ const styles = StyleSheet.create({
     },
 
     bot2: {
-        backgroundColor: 'blue',
+        //backgroundColor: 'blue',
         height: '40%',
         width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+
+    social: {
+        height: '100%',
+        width: '30%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     bot3: {
-        backgroundColor: 'green',
+        //backgroundColor: 'green',
         height: '40%',
         width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

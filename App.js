@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthNav from "./Navigation/AuthNav";
-import AccNav from "./Navigation/AccNav";
+import TabNav from "./Navigation/TabNav";
 
 
 const Stack = createNativeStackNavigator();
@@ -42,7 +42,7 @@ export default function App() {
 }
 
 function Home() {
-  return <AccNav />;
+  return <TabNav />;
 }
 
 function SignInScreen() {
