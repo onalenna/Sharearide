@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable} from "react-native";
 import Swiper from 'react-native-swiper'
 import { FontAwesome } from '@expo/vector-icons'; 
@@ -9,23 +9,22 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
+
 export default class Register extends React.Component {
+    
 
     constructor(props) {
         super(props);
         this.state = {
-          
+            bbc: '#fff'
         }
     }
+
+   
 
     render() {
         return (
             <View style={styles.container}>
-            <Swiper  
-                showsButtons={false}
-                loop={false}
-            >
-            <View style={styles.slide1}>
                 <View style={styles.top}>
                     <View  style={styles.back}>
                         <Ionicons onPress={() => this.props.navigation.navigate('Login')} name="ios-chevron-back" size={40} color="#707070" />
@@ -34,44 +33,77 @@ export default class Register extends React.Component {
                         <Image style={styles.logo} source={require('../assets/logo.png')}/>
                     </View>
                         
-                </View>  
-
-                    <View style={styles.mid}>
-                        <View style={styles.midtxt}>
-                            <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>Please enter your names</Text>
-                        </View>
-
-                        <View style={styles.midfld}>
-                            <TextInput
-                                style={styles.txtfld}
-                            />
-                            <TextInput
-                                style={styles.txtfld2}
-                            />
-                            <TextInput
-                                style={styles.txtfld2}
-                            />
-                        </View>
-                        
-                        <View style={styles.midbtn}>
-                            <Pressable style={styles.btn}>
-                                <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
-                            </Pressable>
-                        </View>
-                    </View> 
-
-                    <View style={styles.bot}>
-                    
-
                 </View> 
+            <Swiper  
+                //height={'40%'}
+                showsButtons={false}
+                loop={false}
+                index={this.state.newIndex}
+                showsPagination={false}
+                //scrollEnabled={false}
+                ref="swiper"
+            >
+            <View style={styles.slide1}>
+                 
+
+                <View style={styles.sld1con}>
+                    <View style={styles.midtxt}>
+                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>Please enter your names</Text>
+                    </View>
+
+                    <View style={styles.midfld}>
+                        <TextInput
+                            style={styles.txtfld}
+                        />
+                        <TextInput
+                            style={styles.txtfld2}
+                        />
+                        <TextInput
+                            style={styles.txtfld3}
+                        />
+                    </View>
+                    
+                    <View style={styles.midbtn}>
+                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({bbc: '#FA8072'})}} style={styles.btn}>
+                            <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
+                        </Pressable>
+                    </View>
+                </View> 
+ 
             </View>
             <View style={styles.slide2}>
-              <Text style={styles.text}>Beautiful</Text>
+            <View style={styles.sld2con}>
+                    <View style={styles.midtxt}>
+                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>Please enter your names</Text>
+                    </View>
+
+                    <View style={styles.midfld}>
+                        <TextInput
+                            style={styles.txtfld}
+                        />
+                        <TextInput
+                            style={styles.txtfld2}
+                        />
+                    </View>
+                    
+                    <View style={styles.midbtn}>
+                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({bbc: '#FA8072'})}} style={styles.btn}>
+                            <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
+                        </Pressable>
+                    </View>
+                </View>
             </View>
             <View style={styles.slide3}>
               <Text style={styles.text}>And simple</Text>
             </View>
           </Swiper>
+          <View style={styles.bot}>
+                    <View style={styles.dot1}/>
+                    <View style={styles.line1}/>
+                    <View style={[styles.dot2, {backgroundColor: this.state.bbc}]}/>
+                    <View style={styles.line2}/>
+                    <View style={styles.dot3}/>
+                </View> 
           </View>
         )
     }
@@ -113,13 +145,13 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        height: 28,
-        width: '55%',
+        height: 30,
+        width: '66%',
     },
 
-    mid: {
+    sld1con: {
         //backgroundColor: '#FA8072',
-        height: '50%',
+        height: '100%',
         width: '100%',
     },
 
@@ -127,7 +159,8 @@ const styles = StyleSheet.create({
         //backgroundColor: 'blue',
         height: '20%',
         width: '100%',
-        paddingLeft: '14%',
+        paddingLeft: '10%',
+        paddingTop: '10%',
     },
 
     midfld: {
@@ -153,6 +186,14 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
 
+    txtfld3: {
+        height: 48,
+        width: 305,
+        borderRadius : 8,
+        backgroundColor: '#F2EEED',
+        marginTop: 15,
+    },
+
     midbtn: {
         //backgroundColor: 'green',
         height: '40%',
@@ -171,9 +212,49 @@ const styles = StyleSheet.create({
     },
 
     bot: {
-        backgroundColor: '#429588',
-        height: '40%',
+        //backgroundColor: '#429588',
+        height: '30%',
         width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+
+    dot1: {
+        height: 18,
+        width: 18,
+        borderRadius: 9,
+        backgroundColor: '#FA8072',
+    },
+
+    dot2: {
+        height: 18,
+        width: 18,
+        borderRadius: 9,
+        borderWidth: 1,
+        borderColor: '#FA8072',
+        
+    },
+
+    dot3: {
+        height: 18,
+        width: 18,
+        borderRadius: 9,
+        borderWidth: 1,
+        borderColor: '#FA8072',
+        backgroundColor: '#FFF',
+    },
+
+    line1: {
+        width: 115, 
+        borderBottomWidth: 1, 
+        borderColor: '#FA8072',
+    },
+
+    line2: {
+        width: 115, 
+        borderBottomWidth: 1, 
+        borderColor: '#FA8072',
     },
 
     bot1: {
@@ -185,34 +266,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
 
-    line: {
-        width: '80%', 
-        borderBottomWidth: 1, 
-        borderColor: '#707070'
-    },
-
-    bot2: {
-        //backgroundColor: 'blue',
-        height: '40%',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-
-    social: {
-        height: '100%',
-        width: '30%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
-    bot3: {
-        //backgroundColor: 'green',
-        height: '40%',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
 
 
 
@@ -222,14 +275,11 @@ const styles = StyleSheet.create({
         //flex: 1,
         //justifyContent: 'center',
         //alignItems: 'center',
-        backgroundColor: '#fff'
+        //backgroundColor: '#fff'
       },
 
     slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5'
+    //backgroundColor: '#97CAE5'
     },
       
     slide3: {

@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        height: 80,
-        width: '77%',
+        height: 60,
+        width: '66%',
     },
 
     mid: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         //backgroundColor: 'blue',
         height: '20%',
         width: '100%',
-        paddingLeft: '14%',
+        paddingLeft: '10%',
     },
 
     midfld: {
