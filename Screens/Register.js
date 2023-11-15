@@ -16,11 +16,46 @@ export default class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bbc: '#fff'
+            dbc2: '#fff',
+            dbc3: '#fff',
+            idx: 0
         }
     }
 
-   
+    dot1Swipe(){
+        if(this.state.dbc3 == '#fff'){
+            this.refs.swiper.scrollBy(-1)
+            this.setState({dbc2: '#fff'})
+        } 
+        if(this.state.dbc3 == '#FA8072'){
+            this.refs.swiper.scrollBy(-2)
+            this.setState({dbc2: '#fff', dbc3: '#fff'})
+        }
+    }
+
+    dot2Swipe(){
+        if(this.state.dbc2 == '#fff'){
+            this.refs.swiper.scrollBy(1)
+            this.setState({dbc2: '#FA8072'})
+        }
+        if(this.state.dbc2 == '#FA8072'){
+            this.refs.swiper.scrollBy(-1)
+            this.setState({dbc3: '#fff'})
+        }  
+    }
+
+    dot3Swipe(){
+        if(this.state.dbc2 == '#fff'){
+            this.refs.swiper.scrollBy(2)
+            this.setState({dbc2: '#FA8072', dbc3: '#FA8072'})
+        }
+        if(this.state.dbc2 == '#FA8072'){
+            this.refs.swiper.scrollBy(1)
+            this.setState({ dbc3: '#FA8072'})
+        }
+          
+    }
+
 
     render() {
         return (
@@ -35,12 +70,11 @@ export default class Register extends React.Component {
                         
                 </View> 
             <Swiper  
-                //height={'40%'}
                 showsButtons={false}
                 loop={false}
-                index={this.state.newIndex}
+                index={this.state.idx}
                 showsPagination={false}
-                //scrollEnabled={false}
+                scrollEnabled={false}
                 ref="swiper"
             >
             <View style={styles.slide1}>
@@ -53,6 +87,7 @@ export default class Register extends React.Component {
 
                     <View style={styles.midfld}>
                         <TextInput
+                            placeholder=""
                             style={styles.txtfld}
                         />
                         <TextInput
@@ -64,7 +99,7 @@ export default class Register extends React.Component {
                     </View>
                     
                     <View style={styles.midbtn}>
-                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({bbc: '#FA8072'})}} style={styles.btn}>
+                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc2: '#FA8072'})}} style={styles.btn}>
                             <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
                         </Pressable>
                     </View>
@@ -74,7 +109,7 @@ export default class Register extends React.Component {
             <View style={styles.slide2}>
             <View style={styles.sld2con}>
                     <View style={styles.midtxt}>
-                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>Please enter your names</Text>
+                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>How do we contact you?</Text>
                     </View>
 
                     <View style={styles.midfld}>
@@ -87,7 +122,7 @@ export default class Register extends React.Component {
                     </View>
                     
                     <View style={styles.midbtn}>
-                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({bbc: '#FA8072'})}} style={styles.btn}>
+                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc3: '#FA8072'})}} style={styles.btn}>
                             <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
                         </Pressable>
                     </View>
@@ -98,11 +133,11 @@ export default class Register extends React.Component {
             </View>
           </Swiper>
           <View style={styles.bot}>
-                    <View style={styles.dot1}/>
+                    <Pressable onPress={()=> this.dot1Swipe()} style={styles.dot1}/>
                     <View style={styles.line1}/>
-                    <View style={[styles.dot2, {backgroundColor: this.state.bbc}]}/>
+                    <Pressable onPress={()=> this.dot2Swipe()} style={[styles.dot2, {backgroundColor: this.state.dbc2}]}/>
                     <View style={styles.line2}/>
-                    <View style={styles.dot3}/>
+                    <Pressable onPress={()=> this.dot3Swipe()} style={[styles.dot3, {backgroundColor: this.state.dbc3}]}/>
                 </View> 
           </View>
         )
