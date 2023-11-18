@@ -50,7 +50,7 @@ export default class Login extends React.Component {
                     </View>
                     
                     <View style={styles.midbtn}>
-                        <Pressable onPress={() => this.props.navigation.navigate('Landing')} style={styles.btn}>
+                        <Pressable onPress={() => this.props.navigation.navigate('Home')} style={styles.btn}>
                             <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>SIGN IN</Text>
                         </Pressable>
                     </View>

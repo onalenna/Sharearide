@@ -1,9 +1,9 @@
-import React, { Component, useRef } from "react";
-import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable} from "react-native";
+import React, { Component, useRef, useState } from "react";
+import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable } from "react-native";
+import { CheckBox } from '@rneui/themed';
 import Swiper from 'react-native-swiper'
-import { FontAwesome } from '@expo/vector-icons'; 
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -11,135 +11,165 @@ const windowHeight = Dimensions.get('window').height;
 
 
 export default class Register extends React.Component {
-    
+
 
     constructor(props) {
         super(props);
         this.state = {
             dbc2: '#fff',
             dbc3: '#fff',
-            idx: 0
+            idx: 0,
+            check: false,
+            opacity: 0.5,
+            disabled: true
         }
     }
 
-    dot1Swipe(){
-        if(this.state.dbc3 == '#fff'){
-            this.refs.swiper.scrollBy(-1)
-            this.setState({dbc2: '#fff'})
-        } 
-        if(this.state.dbc3 == '#FA8072'){
-            this.refs.swiper.scrollBy(-2)
-            this.setState({dbc2: '#fff', dbc3: '#fff'})
+
+
+    checked() {
+        if (this.state.check == false) {
+            this.setState({ check: true, opacity: 1, disabled: false })
+        }
+        else {
+            this.setState({ check: false, opacity: 0.5, disabled: true })
         }
     }
 
-    dot2Swipe(){
-        if(this.state.dbc2 == '#fff'){
-            this.refs.swiper.scrollBy(1)
-            this.setState({dbc2: '#FA8072'})
-        }
-        if(this.state.dbc2 == '#FA8072'){
-            this.refs.swiper.scrollBy(-1)
-            this.setState({dbc3: '#fff'})
-        }  
-    }
-
-    dot3Swipe(){
-        if(this.state.dbc2 == '#fff'){
-            this.refs.swiper.scrollBy(2)
-            this.setState({dbc2: '#FA8072', dbc3: '#FA8072'})
-        }
-        if(this.state.dbc2 == '#FA8072'){
-            this.refs.swiper.scrollBy(1)
-            this.setState({ dbc3: '#FA8072'})
-        }
-          
+    press() {
+        console.warn('continue button is pressed')
     }
 
 
     render() {
+
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <View  style={styles.back}>
+                    <View style={styles.back}>
                         <Ionicons onPress={() => this.props.navigation.navigate('Login')} name="ios-chevron-back" size={40} color="#707070" />
                     </View>
                     <View style={styles.logoCon}>
-                        <Image style={styles.logo} source={require('../assets/logo.png')}/>
-                    </View>
-                        
-                </View> 
-            <Swiper  
-                showsButtons={false}
-                loop={false}
-                index={this.state.idx}
-                showsPagination={false}
-                scrollEnabled={false}
-                ref="swiper"
-            >
-            <View style={styles.slide1}>
-                 
-
-                <View style={styles.sld1con}>
-                    <View style={styles.midtxt}>
-                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>Please enter your names</Text>
+                        <Image style={styles.logo} source={require('../assets/logo.png')} />
                     </View>
 
-                    <View style={styles.midfld}>
-                        <TextInput
-                            placeholder=""
-                            style={styles.txtfld}
-                        />
-                        <TextInput
-                            style={styles.txtfld2}
-                        />
-                        <TextInput
-                            style={styles.txtfld3}
-                        />
+                </View>
+                <Swiper
+                    showsButtons={false}
+                    loop={false}
+                    index={this.state.idx}
+                    showsPagination={false}
+                    scrollEnabled={false}
+                    ref="swiper"
+                >
+                    {/* Slide1 */}
+                    <View>
+                        <View style={styles.midtxt}>
+                            <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Please enter your names</Text>
+                        </View>
+
+                        <View style={styles.midfld}>
+                            <TextInput
+                                placeholder=""
+                                style={styles.txtfld}
+                            />
+                            <TextInput
+                                style={styles.txtfld2}
+                            />
+                            <TextInput
+                                style={styles.txtfld3}
+                            />
+                        </View>
+
+                        <View style={styles.midbtn}>
+                            <Pressable onPress={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc2: '#FA8072' }) }} style={styles.btn}>
+                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                            </Pressable>
+                        </View>
                     </View>
-                    
-                    <View style={styles.midbtn}>
-                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc2: '#FA8072'})}} style={styles.btn}>
-                            <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
-                        </Pressable>
+                    {/* Slide2 */}
+                    <View style={{flex: 1}}>
+                        <Swiper
+                            scrollEnabled={true}
+                            showsButtons={false}
+                            loop={false}
+                            showsPagination={false}
+                        >
+                            <View style={{flex: 1}}>
+                                <View style={{height: '33%', alignItems: 'center', justifyContent: 'center'}}>
+                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>How do we contact you?</Text>
+                                </View>
+
+                                <View style={{flex: 1, alignItems: 'center',}}>
+                                    <TextInput
+                                        style={styles.txtfld}
+                                    />
+                                    <TextInput
+                                        style={styles.txtfld2}
+                                    />
+                                </View>
+                            </View>
+
+                            <View style={{flex: 1}}>
+                            <View style={{height: '33%', alignItems: 'center', justifyContent: 'center'}}>
+                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Verify your number</Text>
+                                    
+                                </View>
+                                <Text style={{ fontSize: 16, color: '#707070' }}>Enter code sent to 72 123 456</Text>
+
+                                
+                            </View>
+
+                        </Swiper>
+
+
+                        <View style={styles.midbtn}>
+                            <Pressable onPress={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc3: '#FA8072' }) }} style={styles.btn}>
+                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                            </Pressable>
+                        </View>
                     </View>
-                </View> 
- 
-            </View>
-            <View style={styles.slide2}>
-            <View style={styles.sld2con}>
-                    <View style={styles.midtxt}>
-                        <Text style={{fontSize: 26, fontWeight: '400', color: '#707070'}}>How do we contact you?</Text>
+                    {/* Slide3 */}
+                    <View>
+                        <View style={styles.midtxt}>
+                            <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Create a password</Text>
+                        </View>
+
+                        <View style={styles.midfld}>
+                            <TextInput
+                                style={styles.txtfld}
+                            />
+                            <TextInput
+                                style={styles.txtfld2}
+                            />
+                        </View>
+
+                        <View style={styles.midbtn}>
+                            <Pressable onPress={() => this.props.navigation.navigate('Home')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
+                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                            </Pressable>
+
+                            <CheckBox
+                                containerStyle={{ width: '85%' }}
+                                checkedColor="#429588"
+                                textStyle={{ color: '#707070', fontSize: 18, fontWeight: 'normal', }}
+                                title='I confirm that I have read and agree to the Terms & Conditions and acknowledge the Privacy Policy'
+                                checked={this.state.check}
+                                onPress={() => this.checked()}
+                            />
+                        </View>
+
                     </View>
 
-                    <View style={styles.midfld}>
-                        <TextInput
-                            style={styles.txtfld}
-                        />
-                        <TextInput
-                            style={styles.txtfld2}
-                        />
-                    </View>
-                    
-                    <View style={styles.midbtn}>
-                        <Pressable onPress={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc3: '#FA8072'})}} style={styles.btn}>
-                            <Text style={{fontSize: 20, fontWeight: '500', color: '#ffffff'}}>Continue</Text>
-                        </Pressable>
-                    </View>
+                </Swiper>
+                <View style={styles.bot}>
+                    <View style={styles.dot1} />
+                    <View style={styles.line1} />
+                    <View style={[styles.dot2, { backgroundColor: this.state.dbc2 }]} />
+                    <View style={styles.line2} />
+                    <View style={[styles.dot3, { backgroundColor: this.state.dbc3 }]} />
                 </View>
             </View>
-            <View style={styles.slide3}>
-              <Text style={styles.text}>And simple</Text>
-            </View>
-          </Swiper>
-          <View style={styles.bot}>
-                    <Pressable onPress={()=> this.dot1Swipe()} style={styles.dot1}/>
-                    <View style={styles.line1}/>
-                    <Pressable onPress={()=> this.dot2Swipe()} style={[styles.dot2, {backgroundColor: this.state.dbc2}]}/>
-                    <View style={styles.line2}/>
-                    <Pressable onPress={()=> this.dot3Swipe()} style={[styles.dot3, {backgroundColor: this.state.dbc3}]}/>
-                </View> 
-          </View>
         )
     }
 }
@@ -168,7 +198,7 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: 'center',
         paddingLeft: '10%',
-        
+
     },
 
     logoCon: {
@@ -176,7 +206,7 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
-     
+
     },
 
     logo: {
@@ -184,11 +214,6 @@ const styles = StyleSheet.create({
         width: '66%',
     },
 
-    sld1con: {
-        //backgroundColor: '#FA8072',
-        height: '100%',
-        width: '100%',
-    },
 
     midtxt: {
         //backgroundColor: 'blue',
@@ -209,14 +234,14 @@ const styles = StyleSheet.create({
     txtfld: {
         height: 48,
         width: 305,
-        borderRadius : 8,
+        borderRadius: 8,
         backgroundColor: '#F2EEED'
     },
 
     txtfld2: {
         height: 48,
         width: 305,
-        borderRadius : 8,
+        borderRadius: 8,
         backgroundColor: '#F2EEED',
         marginTop: 15,
     },
@@ -224,16 +249,17 @@ const styles = StyleSheet.create({
     txtfld3: {
         height: 48,
         width: 305,
-        borderRadius : 8,
+        borderRadius: 8,
         backgroundColor: '#F2EEED',
         marginTop: 15,
     },
 
     midbtn: {
         //backgroundColor: 'green',
+        padding: '6%',
         height: '40%',
         width: '100%',
-        justifyContent: 'center',
+        //justifyContent: 'center',
         alignItems: 'center',
     },
 
@@ -241,6 +267,7 @@ const styles = StyleSheet.create({
         height: 48,
         width: 305,
         borderRadius: 24,
+        marginBottom: '2%',
         backgroundColor: '#FA8072',
         justifyContent: 'center',
         alignItems: 'center',
@@ -248,7 +275,7 @@ const styles = StyleSheet.create({
 
     bot: {
         //backgroundColor: '#429588',
-        height: '30%',
+        height: '20%',
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
@@ -268,7 +295,7 @@ const styles = StyleSheet.create({
         borderRadius: 9,
         borderWidth: 1,
         borderColor: '#FA8072',
-        
+
     },
 
     dot3: {
@@ -281,14 +308,14 @@ const styles = StyleSheet.create({
     },
 
     line1: {
-        width: 115, 
-        borderBottomWidth: 1, 
+        width: 115,
+        borderBottomWidth: 1,
         borderColor: '#FA8072',
     },
 
     line2: {
-        width: 115, 
-        borderBottomWidth: 1, 
+        width: 115,
+        borderBottomWidth: 1,
         borderColor: '#FA8072',
     },
 
@@ -303,29 +330,4 @@ const styles = StyleSheet.create({
 
 
 
-
-
-
-    slide1: {
-        //flex: 1,
-        //justifyContent: 'center',
-        //alignItems: 'center',
-        //backgroundColor: '#fff'
-      },
-
-    slide2: {
-    //backgroundColor: '#97CAE5'
-    },
-      
-    slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9'
-    },
-    text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold'
-    }
 });
