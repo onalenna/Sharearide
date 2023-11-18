@@ -52,7 +52,6 @@ export default class Register extends React.Component {
                     <View style={styles.logoCon}>
                         <Image style={styles.logo} source={require('../assets/logo.png')} />
                     </View>
-
                 </View>
                 <Swiper
                     showsButtons={false}
@@ -88,19 +87,20 @@ export default class Register extends React.Component {
                         </View>
                     </View>
                     {/* Slide2 */}
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         <Swiper
                             scrollEnabled={true}
                             showsButtons={false}
                             loop={false}
                             showsPagination={false}
+                            ref="otp"
                         >
-                            <View style={{flex: 1}}>
-                                <View style={{height: '33%', alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{ flex: 1 }}>
+                                <View style={{ height: '33%', justifyContent: 'center', paddingLeft: '10%' }}>
                                     <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>How do we contact you?</Text>
                                 </View>
 
-                                <View style={{flex: 1, alignItems: 'center',}}>
+                                <View style={{ flex: 1, alignItems: 'center', }}>
                                     <TextInput
                                         style={styles.txtfld}
                                     />
@@ -110,14 +110,44 @@ export default class Register extends React.Component {
                                 </View>
                             </View>
 
-                            <View style={{flex: 1}}>
-                            <View style={{height: '33%', alignItems: 'center', justifyContent: 'center'}}>
-                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Verify your number</Text>
-                                    
+                            <View style={{ flex: 1, padding: '8%'}}>
+                                <View style={{ height: '33%', justifyContent: 'center',  }}>
+                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070', paddingBottom: '2%' }}>Verify your number</Text>
+                                    <Text style={{ fontSize: 14, color: '#707070' }}>Enter code sent to 72 123 456</Text>
                                 </View>
-                                <Text style={{ fontSize: 16, color: '#707070' }}>Enter code sent to 72 123 456</Text>
-
-                                
+                                <View style={styles.otpCon}>
+                                    <View style={styles.otpSqr}>
+                                        <TextInput
+                                            fontSize={23}
+                                            keyboardType="numeric"
+                                            textAlign="center"
+                                        />
+                                    </View>
+                                    <View style={styles.otpSqr}>
+                                        <TextInput
+                                            fontSize={23}
+                                            keyboardType="numeric"
+                                            textAlign="center"
+                                        />
+                                    </View>
+                                    <View style={styles.otpSqr}>
+                                        <TextInput
+                                            fontSize={23}
+                                            keyboardType="numeric"
+                                            textAlign="center"
+                                        />
+                                    </View>
+                                    <View style={styles.otpSqr}>
+                                        <TextInput
+                                            fontSize={23}
+                                            keyboardType="numeric"
+                                            textAlign="center"
+                                        />
+                                    </View>
+                                </View>
+                                <Pressable style={styles.resend}>
+                                    <Text style={{ fontSize: 14, color: '#707070' }}>Resend OTP</Text>
+                                </Pressable>
                             </View>
 
                         </Swiper>
@@ -327,6 +357,36 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row'
     },
+
+    otpCon: {
+        height: 49,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '10%',
+        //backgroundColor: '#c1c1c1'
+    },
+
+    otpSqr: {
+        height: 49,
+        width: 47,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F2EEED'
+    },
+
+    resend: {
+        height: 40, 
+        width: 148, 
+        borderRadius: 24,
+        backgroundColor:'#F2EEED', 
+        addingLeft: '10%', 
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 
 
 

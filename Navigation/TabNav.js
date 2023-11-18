@@ -11,14 +11,30 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNav() {
 
-    return (
-        <Tab.Navigator>
-          <Tab.Screen name="Landing" component={Land} />
-          <Tab.Screen name="Activity" component={Activity} />
-          <Tab.Screen name="Profile" component={Prof} />
-          <Tab.Screen name="Settings" component={Sett} />
-        </Tab.Navigator>
-      );
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Landing"
+        component={Land}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Activity"
+        component={Activity}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Prof}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Sett}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
+  );
 
 }
 
