@@ -1,9 +1,41 @@
 import React, { Component } from "react";
-import { View, Text, Image, TextInput, StyleSheet, Dimensions } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const DATA = [
+    {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        title: 'First Item',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        title: 'Second Item',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f69',
+        title: 'Second Item',
+    },
+
+
+];
+
+const Item = () => (
+    <TouchableOpacity style={styles.flatItem}>
+        <View>
+            
+        </View>
+
+    </TouchableOpacity>
+);
+
+const separator = () => {
+    return (
+        <View style={{ width: 20 }} />
+    )
+};
 
 
 export default class Home extends React.Component {
@@ -41,17 +73,47 @@ export default class Home extends React.Component {
                             />
                         </View>
                         <View style={styles.midCard3}>
-
+                            <View style={{ height: '100%', width: '50%', justifyContent: 'center' }}>
+                                <Pressable style={{ height: 27, width: 94, borderRadius: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FA8072' }}>
+                                    <Text style={{ color: "#fff", paddingRight: "10%" }}>Date</Text>
+                                    <Ionicons name="calendar" color="#fff" size={20} />
+                                </Pressable>
+                            </View>
+                            <View style={{ height: '100%', width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '5%', paddingRight: '5%' }}>
+                                <Pressable style={{ height: 26, width: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2EEED' }}>
+                                    <FontAwesome5 name="minus" color="#707070" size={18} />
+                                </Pressable>
+                                <View style={{ height: 26, width: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FA8072' }}>
+                                    <Text style={{ color: "#fff", fontSize: 18 }}>1</Text>
+                                </View>
+                                <Pressable style={{ height: 26, width: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2EEED' }}>
+                                    <FontAwesome5 name="plus" color="#707070" size={18} />
+                                </Pressable>
+                            </View>
                         </View>
                         <View style={styles.midCard4}>
-
+                            <Pressable style={{ height: 36, width: '100%', borderRadius: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#429588' }}>
+                                <Text style={{ color: "#fff", }}>Search</Text>
+                            </Pressable>
                         </View>
 
                     </View>
                 </View>
 
                 <View style={styles.bot}>
-
+                    <View style={styles.bot1}>
+                        <Text style={{ fontSize: 21, fontWeight: '600', color: '#707070' }}>Favourite Routes</Text>
+                    </View>
+                    <SafeAreaView style={styles.bot2}>
+                        <FlatList
+                            ItemSeparatorComponent={separator}
+                            data={DATA}
+                            renderItem={Item}
+                            keyExtractor={item => item.id}
+                            //extraData={selectedId}
+                            horizontal={true}
+                        />
+                    </SafeAreaView>
                 </View>
 
 
@@ -105,7 +167,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'blue'
+        //  backgroundColor: 'blue'
     },
 
     midCard: {
@@ -113,9 +175,8 @@ const styles = StyleSheet.create({
         width: '85%',
         padding: '5%',
         borderRadius: 30,
-        //justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
         backgroundColor: '#fff',
         ...Platform.select({
             ios: {
@@ -132,14 +193,14 @@ const styles = StyleSheet.create({
     midCard1: {
         height: '15%',
         width: '100%',
-        backgroundColor: 'green'
+        //  backgroundColor: 'green'
     },
 
     midCard2: {
         height: '40%',
         width: '100%',
         justifyContent: 'space-between',
-        backgroundColor: 'blue'
+        //  backgroundColor: 'blue'
     },
 
     txtfld: {
@@ -153,21 +214,56 @@ const styles = StyleSheet.create({
         height: '25%',
         width: '100%',
         justifyContent: 'space-between',
-        backgroundColor: 'red'
+        //backgroundColor: 'red',
+        flexDirection: 'row',
     },
 
     midCard4: {
         height: '20%',
         width: '100%',
-        justifyContent: 'space-between',
-        backgroundColor: 'yellow'
+        justifyContent: 'center',
+        //backgroundColor: 'yellow'
     },
 
     bot: {
         height: '50%',
         width: '100%',
-        justifyContent: 'center',
+        //justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'green'
+        //backgroundColor: 'green'
     },
+
+    bot1: {
+        height: '15%',
+        width: '100%',
+        justifyContent: 'space-between',
+        // backgroundColor: 'blue',
+        paddingLeft: '8%'
+    },
+
+    bot2: {
+     
+        alignItems: 'center',
+        //backgroundColor: 'red',
+        paddingTop: '8%',
+        paddingLeft: '2%',
+        paddingRight: '2%',
+    },
+
+    flatItem: {
+        height: 216,
+        width: 140,
+        borderRadius: 21,
+        backgroundColor: '#fff',
+        ...Platform.select({
+            ios: {
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.4,
+                shadowRadius: 3,
+            },
+            android: {
+                elevation: 5
+            }
+        }),
+    }
 });
