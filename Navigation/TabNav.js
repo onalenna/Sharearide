@@ -14,9 +14,9 @@ export default function TabNav() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Landing"
+        name="Home"
         component={Land}
-        options={{ headerShown: false }}
+        options={{ headerShown: false}}
       />
       <Tab.Screen
         name="Activity"

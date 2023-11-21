@@ -24,9 +24,33 @@ const DATA = [
 
 const Item = () => (
     <TouchableOpacity style={styles.flatItem}>
-        <View>
-            
+        <Image style={{ height: 120, width: 118, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/bus.jpg')} />
+        <Text style={{color: '#707070'}}>BusTravel Tours</Text>
+        <View style={{ height: '10%', width: '100%', flexDirection: 'row', }}>
+            <View style={{ height: '100%', width: '20%', flexDirection: 'row',  alignItems: 'center',  }}>
+                <Ionicons name='location' color='#FA8072' />
+            </View>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row',  alignItems: 'center', }}>
+                <Text style={{ fontSize: 9, color: '#707070' }}>Gaborone - Francistown</Text>
+            </View>
         </View>
+        <View style={{ height: '10%', width: '100%', flexDirection: 'row', }}>
+            <View style={{ height: '100%', width: '20%', flexDirection: 'row',  alignItems: 'center',  }}>
+                <FontAwesome5 name='clock' color='#FA8072' />
+            </View>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row',  alignItems: 'center',  }}>
+                <Text style={{ fontSize: 9, color: '#707070' }}>0800hrs - 1730hrs</Text>
+            </View>
+        </View>
+        <View style={{ height: '10%', width: '100%', flexDirection: 'row',  }}>
+            <View style={{ height: '100%', width: '20%', flexDirection: 'row', alignItems: 'center', }}>
+                <Ionicons name='map-sharp' color='#FA8072' />
+            </View>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center',  }}>
+                <Text style={{ fontSize: 9, color: '#707070' }}>0800hrs - 1730hrs</Text>
+            </View>
+        </View>
+
 
     </TouchableOpacity>
 );
@@ -79,7 +103,7 @@ export default class Home extends React.Component {
                                     <Ionicons name="calendar" color="#fff" size={20} />
                                 </Pressable>
                             </View>
-                            <View style={{ height: '100%', width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '5%', paddingRight: '5%' }}>
+                            <View style={{ height: '100%', width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '10%', }}>
                                 <Pressable style={{ height: 26, width: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2EEED' }}>
                                     <FontAwesome5 name="minus" color="#707070" size={18} />
                                 </Pressable>
@@ -102,7 +126,7 @@ export default class Home extends React.Component {
 
                 <View style={styles.bot}>
                     <View style={styles.bot1}>
-                        <Text style={{ fontSize: 21, fontWeight: '600', color: '#707070' }}>Favourite Routes</Text>
+                        <Text style={{ fontSize: 21, fontWeight: '300', color: '#707070' }}>Favourite Routes</Text>
                     </View>
                     <SafeAreaView style={styles.bot2}>
                         <FlatList
@@ -236,16 +260,16 @@ const styles = StyleSheet.create({
     bot1: {
         height: '15%',
         width: '100%',
-        justifyContent: 'space-between',
-        // backgroundColor: 'blue',
+        justifyContent: 'center',
+        //backgroundColor: 'blue',
         paddingLeft: '8%'
     },
 
     bot2: {
-     
+
         alignItems: 'center',
         //backgroundColor: 'red',
-        paddingTop: '8%',
+        paddingTop: '6%',
         paddingLeft: '2%',
         paddingRight: '2%',
     },
@@ -253,6 +277,7 @@ const styles = StyleSheet.create({
     flatItem: {
         height: 216,
         width: 140,
+        padding: '7%',
         borderRadius: 21,
         backgroundColor: '#fff',
         ...Platform.select({
@@ -265,5 +290,6 @@ const styles = StyleSheet.create({
                 elevation: 5
             }
         }),
+
     }
 });

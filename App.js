@@ -21,7 +21,7 @@ export default function App() {
         {/* {isSignedIn ? (
           <> */}
             <Stack.Screen 
-              name="Home" 
+              name="Landing" 
               component={Home}
               options={{ headerShown: false }} 
             />

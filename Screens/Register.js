@@ -175,7 +175,7 @@ export default class Register extends React.Component {
                         </View>
 
                         <View style={styles.midbtn}>
-                            <Pressable onPress={() => this.props.navigation.navigate('Home')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
+                            <Pressable onPress={() => this.props.navigation.navigate('Landing')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
                                 <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
                             </Pressable>
 
