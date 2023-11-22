@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: windowHeight,
         width: windowWidth,
-        marginTop: '10%'
+        marginTop: '8%'
     },
 
     top: {
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // backgroundColor: 'red'
+      //  backgroundColor: 'red'
     },
 
     logoCon: {
