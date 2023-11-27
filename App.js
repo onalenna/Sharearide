@@ -7,34 +7,25 @@ import TabNav from "./Navigation/TabNav";
 
 const Stack = createNativeStackNavigator();
 
-const getIsSignedIn = () => {
-  // custom logic
-  return false;
-};
 
 export default function App() {
-  //const isSignedIn = getIsSignedIn();
+
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* {isSignedIn ? (
-          <> */}
-            <Stack.Screen 
-              name="Landing" 
-              component={Home}
-              options={{ headerShown: false }} 
-            />
-          {/* </>
-        ) : (
-          <> */}
-            <Stack.Screen 
-              name="SignIn" 
-              component={SignInScreen} 
-              options={{ headerShown: false }}
-            />
-          {/* </>
-        )} */}
+        
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Landing"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );

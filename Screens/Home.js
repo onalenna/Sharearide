@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import KeyboardShift from "@fullstackcraft/react-native-keyboard-shift/lib/components/KeyboardShift";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -73,7 +75,7 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
                 <View style={styles.top}>
                     <View style={styles.logoCon}>
                         <Image style={styles.logo} source={require('../assets/logo.png')} />
@@ -92,6 +94,7 @@ export default class Home extends React.Component {
                             <TextInput
                                 style={styles.txtfld}
                             />
+                             
                             <TextInput
                                 style={styles.txtfld}
                             />
@@ -140,9 +143,8 @@ export default class Home extends React.Component {
                     </SafeAreaView>
                 </View>
 
-
-
-            </View>
+              
+            </KeyboardAwareScrollView>
 
         )
     }
@@ -159,12 +161,12 @@ const styles = StyleSheet.create({
     },
 
     top: {
-        height: '10%',
+        height: 70,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-      //  backgroundColor: 'red'
+      //backgroundColor: 'red'
     },
 
     logoCon: {
@@ -187,11 +189,11 @@ const styles = StyleSheet.create({
     },
 
     mid: {
-        height: '40%',
+        height: 290,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        //  backgroundColor: 'blue'
+        //backgroundColor: 'blue'
     },
 
     midCard: {

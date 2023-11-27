@@ -21,7 +21,8 @@ export default class Register extends React.Component {
             idx: 0,
             check: false,
             opacity: 0.5,
-            disabled: true
+            disabled: true,
+            cntn: 'flex'
         }
     }
 
@@ -40,6 +41,14 @@ export default class Register extends React.Component {
         console.warn('continue button is pressed')
     }
 
+    onSwipe() {
+      
+            this.refs.otp.scrollBy(1)
+            this.setState({cntn: 'none'})
+       
+        
+    }
+
 
     render() {
 
@@ -53,145 +62,151 @@ export default class Register extends React.Component {
                         <Image style={styles.logo} source={require('../assets/logo.png')} />
                     </View>
                 </View>
-                <Swiper
-                    showsButtons={false}
-                    loop={false}
-                    index={this.state.idx}
-                    showsPagination={false}
-                    scrollEnabled={false}
-                    ref="swiper"
-                >
-                    {/* Slide1 */}
-                    <View>
-                        <View style={styles.midtxt}>
-                            <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Please enter your names</Text>
-                        </View>
+                <View style={{ height: 500 }}>
+                    <Swiper
 
-                        <View style={styles.midfld}>
-                            <TextInput
-                                placeholder=""
-                                style={styles.txtfld}
-                            />
-                            <TextInput
-                                style={styles.txtfld2}
-                            />
-                            <TextInput
-                                style={styles.txtfld3}
-                            />
-                        </View>
-
-                        <View style={styles.midbtn}>
-                            <Pressable onPress={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc2: '#FA8072' }) }} style={styles.btn}>
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                    {/* Slide2 */}
-                    <View style={{ flex: 1 }}>
-                        <Swiper
-                            scrollEnabled={true}
-                            showsButtons={false}
-                            loop={false}
-                            showsPagination={false}
-                            ref="otp"
-                        >
-                            <View style={{ flex: 1 }}>
-                                <View style={{ height: '33%', justifyContent: 'center', paddingLeft: '10%' }}>
-                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>How do we contact you?</Text>
-                                </View>
-
-                                <View style={{ flex: 1, alignItems: 'center', }}>
-                                    <TextInput
-                                        style={styles.txtfld}
-                                    />
-                                    <TextInput
-                                        style={styles.txtfld2}
-                                    />
-                                </View>
+                        showsButtons={false}
+                        loop={false}
+                        index={this.state.idx}
+                        showsPagination={false}
+                        scrollEnabled={false}
+                        ref="swiper"
+                    >
+                        {/* Slide1 */}
+                        <View >
+                            <View style={styles.midtxt}>
+                                <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Please enter your names</Text>
                             </View>
 
-                            <View style={{ flex: 1, padding: '8%'}}>
-                                <View style={{ height: '33%', justifyContent: 'center',  }}>
-                                    <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070', paddingBottom: '2%' }}>Verify your number</Text>
-                                    <Text style={{ fontSize: 14, color: '#707070' }}>Enter code sent to 72 123 456</Text>
-                                </View>
-                                <View style={styles.otpCon}>
-                                    <View style={styles.otpSqr}>
-                                        <TextInput
-                                            fontSize={23}
-                                            keyboardType="numeric"
-                                            textAlign="center"
-                                        />
-                                    </View>
-                                    <View style={styles.otpSqr}>
-                                        <TextInput
-                                            fontSize={23}
-                                            keyboardType="numeric"
-                                            textAlign="center"
-                                        />
-                                    </View>
-                                    <View style={styles.otpSqr}>
-                                        <TextInput
-                                            fontSize={23}
-                                            keyboardType="numeric"
-                                            textAlign="center"
-                                        />
-                                    </View>
-                                    <View style={styles.otpSqr}>
-                                        <TextInput
-                                            fontSize={23}
-                                            keyboardType="numeric"
-                                            textAlign="center"
-                                        />
-                                    </View>
-                                </View>
-                                <Pressable style={styles.resend}>
-                                    <Text style={{ fontSize: 14, color: '#707070' }}>Resend OTP</Text>
+                            <View style={styles.midfld}>
+                                <TextInput
+                                    placeholder=""
+                                    style={styles.txtfld}
+                                />
+                                <TextInput
+                                    style={styles.txtfld2}
+                                />
+                                <TextInput
+                                    style={styles.txtfld3}
+                                />
+                            </View>
+
+                            <View style={styles.midbtn}>
+                                <Pressable onPress={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc2: '#FA8072' }) }} style={styles.btn}>
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
                                 </Pressable>
                             </View>
-
-                        </Swiper>
-
-
-                        <View style={styles.midbtn}>
-                            <Pressable onPress={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc3: '#FA8072' }) }} style={styles.btn}>
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
-                            </Pressable>
                         </View>
-                    </View>
-                    {/* Slide3 */}
-                    <View>
-                        <View style={styles.midtxt}>
-                            <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Create a password</Text>
+                        {/* Slide2 */}
+                        <View style={{ flex: 1 }}>
+                            <Swiper
+                                scrollEnabled={true}
+                                showsButtons={false}
+                                loop={false}
+                                showsPagination={false}
+                                ref="otp"
+                            >
+                                <View style={{ flex: 1 }}>
+                                    <View style={{ height: '33%', justifyContent: 'center', paddingLeft: '10%' }}>
+                                        <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>How do we contact you?</Text>
+                                    </View>
+
+                                    <View style={{ flex: 1, alignItems: 'center', }}>
+                                        <TextInput
+                                            style={styles.txtfld}
+                                        />
+                                        <TextInput
+                                            style={styles.txtfld2}
+                                        />
+                                    </View>
+                                </View>
+
+                                <View style={{ flex: 1, padding: '8%' }}>
+                                    <View style={{ height: '33%', justifyContent: 'center', }}>
+                                        <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070', paddingBottom: '2%' }}>Verify your number</Text>
+                                        <Text style={{ fontSize: 14, color: '#707070' }}>Enter code sent to 72 123 456</Text>
+                                    </View>
+                                    <View style={styles.otpCon}>
+                                        <View style={styles.otpSqr}>
+                                            <TextInput
+                                                id={this.state.one}
+                                                fontSize={23}
+                                                keyboardType="numeric"
+                                                textAlign="center"
+                                            />
+                                        </View>
+                                        <View style={styles.otpSqr}>
+                                            <TextInput
+                                                fontSize={23}
+                                                keyboardType="numeric"
+                                                textAlign="center"
+                                            />
+                                        </View>
+                                        <View style={styles.otpSqr}>
+                                            <TextInput
+                                                fontSize={23}
+                                                keyboardType="numeric"
+                                                textAlign="center"
+                                            />
+                                        </View>
+                                        <View style={styles.otpSqr}>
+                                            <TextInput
+                                                onChangeText={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc3: '#FA8072'})}}
+                                                fontSize={23}
+                                                keyboardType="numeric"
+                                                textAlign="center"
+                                            />
+                                        </View>
+                                    </View>
+                                    <Pressable style={styles.resend}>
+                                        <Text style={{ fontSize: 14, color: '#707070' }}>Resend OTP</Text>
+                                    </Pressable>
+                                </View>
+
+                            </Swiper>
+
+
+                            <View style={styles.midbtn}>
+                                <Pressable onPress={() => this.onSwipe()} display={this.state.cntn} style={styles.btn}>
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                        {/* Slide3 */}
+                        <View>
+                            <View style={styles.midtxt}>
+                                <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070' }}>Create a password</Text>
+                            </View>
+
+                            <View style={styles.midfld}>
+                                <TextInput
+                                    style={styles.txtfld}
+                                />
+                                <TextInput
+                                    style={styles.txtfld2}
+                                />
+                            </View>
+
+                            <View style={styles.midbtn}>
+                                <Pressable onPress={() => this.props.navigation.navigate('Landing')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                                </Pressable>
+
+                                <CheckBox
+                                    containerStyle={{ width: '85%' }}
+                                    checkedColor="#429588"
+                                    textStyle={{ color: '#707070', fontSize: 18, fontWeight: 'normal', }}
+                                    title='I confirm that I have read and agree to the Terms & Conditions and acknowledge the Privacy Policy'
+                                    checked={this.state.check}
+                                    onPress={() => this.checked()}
+                                />
+                            </View>
+
                         </View>
 
-                        <View style={styles.midfld}>
-                            <TextInput
-                                style={styles.txtfld}
-                            />
-                            <TextInput
-                                style={styles.txtfld2}
-                            />
-                        </View>
+                    </Swiper>
+                </View>
 
-                        <View style={styles.midbtn}>
-                            <Pressable onPress={() => this.props.navigation.navigate('Landing')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
-                            </Pressable>
-
-                            <CheckBox
-                                containerStyle={{ width: '85%' }}
-                                checkedColor="#429588"
-                                textStyle={{ color: '#707070', fontSize: 18, fontWeight: 'normal', }}
-                                title='I confirm that I have read and agree to the Terms & Conditions and acknowledge the Privacy Policy'
-                                checked={this.state.check}
-                                onPress={() => this.checked()}
-                            />
-                        </View>
-
-                    </View>
-
-                </Swiper>
                 <View style={styles.bot}>
                     <View style={styles.dot1} />
                     <View style={styles.line1} />
@@ -379,11 +394,11 @@ const styles = StyleSheet.create({
     },
 
     resend: {
-        height: 40, 
-        width: 148, 
+        height: 40,
+        width: 148,
         borderRadius: 24,
-        backgroundColor:'#F2EEED', 
-        addingLeft: '10%', 
+        backgroundColor: '#F2EEED',
+        addingLeft: '10%',
         justifyContent: 'center',
         alignItems: 'center',
     }

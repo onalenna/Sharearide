@@ -103,20 +103,20 @@ const styles = StyleSheet.create({
 
     top: {
         //backgroundColor: '#c1c1c1',
-        height: '20%',
+        height: 150,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     logo: {
-        height: 60,
+        height: '40%',
         width: '66%',
     },
 
     mid: {
-        //backgroundColor: '#FA8072',
-        height: '40%',
+       // backgroundColor: '#FA8072',
+        height: 300,
         width: '100%',
     },
 
