@@ -22,7 +22,8 @@ export default class Register extends React.Component {
             check: false,
             opacity: 0.5,
             disabled: true,
-            cntn: 'flex'
+            cntn: 'flex',
+            focus2: false
         }
     }
 
@@ -42,11 +43,11 @@ export default class Register extends React.Component {
     }
 
     onSwipe() {
-      
-            this.refs.otp.scrollBy(1)
-            this.setState({cntn: 'none'})
-       
-        
+
+        this.refs.otp.scrollBy(1)
+        this.setState({ cntn: 'none' })
+
+
     }
 
 
@@ -80,13 +81,15 @@ export default class Register extends React.Component {
 
                             <View style={styles.midfld}>
                                 <TextInput
-                                    placeholder=""
+                                    placeholder='Firstname' fontSize={18}
                                     style={styles.txtfld}
                                 />
                                 <TextInput
+                                    placeholder='Lastname' fontSize={18}
                                     style={styles.txtfld2}
                                 />
                                 <TextInput
+                                    placeholder='Gender' fontSize={18}
                                     style={styles.txtfld3}
                                 />
                             </View>
@@ -113,9 +116,11 @@ export default class Register extends React.Component {
 
                                     <View style={{ flex: 1, alignItems: 'center', }}>
                                         <TextInput
+                                            placeholder='Email' fontSize={18}
                                             style={styles.txtfld}
                                         />
                                         <TextInput
+                                            placeholder='Number' fontSize={18}
                                             style={styles.txtfld2}
                                         />
                                     </View>
@@ -129,7 +134,17 @@ export default class Register extends React.Component {
                                     <View style={styles.otpCon}>
                                         <View style={styles.otpSqr}>
                                             <TextInput
-                                                id={this.state.one}
+                                                maxLength={1}
+                                                fontSize={23}
+                                                keyboardType="numeric"
+                                                textAlign="center"
+                                                onChangeText={()=> this.setState({focus2: true})}
+                                            />
+                                        </View>
+                                        <View style={styles.otpSqr}>
+                                            <TextInput
+                                                autoFocus={this.state.focus2}
+                                                maxLength={1}
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
@@ -137,6 +152,7 @@ export default class Register extends React.Component {
                                         </View>
                                         <View style={styles.otpSqr}>
                                             <TextInput
+                                                maxLength={1}
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
@@ -144,14 +160,8 @@ export default class Register extends React.Component {
                                         </View>
                                         <View style={styles.otpSqr}>
                                             <TextInput
-                                                fontSize={23}
-                                                keyboardType="numeric"
-                                                textAlign="center"
-                                            />
-                                        </View>
-                                        <View style={styles.otpSqr}>
-                                            <TextInput
-                                                onChangeText={()=> {this.refs.swiper.scrollBy(1), this.setState({dbc3: '#FA8072'})}}
+                                                maxLength={1}
+                                                onChangeText={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc3: '#FA8072' }) }}
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
@@ -180,9 +190,11 @@ export default class Register extends React.Component {
 
                             <View style={styles.midfld}>
                                 <TextInput
+                                    placeholder='Password' fontSize={18}
                                     style={styles.txtfld}
                                 />
                                 <TextInput
+                                    placeholder='Confirm Password' fontSize={18}
                                     style={styles.txtfld2}
                                 />
                             </View>
@@ -280,6 +292,7 @@ const styles = StyleSheet.create({
         height: 48,
         width: 305,
         borderRadius: 8,
+        paddingLeft: '4%',
         backgroundColor: '#F2EEED'
     },
 
@@ -287,6 +300,7 @@ const styles = StyleSheet.create({
         height: 48,
         width: 305,
         borderRadius: 8,
+        paddingLeft: '4%',
         backgroundColor: '#F2EEED',
         marginTop: 15,
     },
@@ -295,6 +309,7 @@ const styles = StyleSheet.create({
         height: 48,
         width: 305,
         borderRadius: 8,
+        paddingLeft: '4%',
         backgroundColor: '#F2EEED',
         marginTop: 15,
     },
