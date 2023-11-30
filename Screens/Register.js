@@ -1,5 +1,5 @@
 import React, { Component, useRef, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable, } from "react-native";
 import { CheckBox } from '@rneui/themed';
 import Swiper from 'react-native-swiper'
 import { Ionicons } from '@expo/vector-icons';
@@ -138,28 +138,32 @@ export default class Register extends React.Component {
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
-                                                onChangeText={()=> this.setState({focus2: true})}
+                                                onChangeText={() => this.refs['2nd'].focus()}
                                             />
                                         </View>
                                         <View style={styles.otpSqr}>
                                             <TextInput
-                                                autoFocus={this.state.focus2}
+                                                ref={'2nd'}
                                                 maxLength={1}
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
+                                                onChangeText={() => this.refs['3rd'].focus()}
                                             />
                                         </View>
                                         <View style={styles.otpSqr}>
                                             <TextInput
+                                                ref={'3rd'}
                                                 maxLength={1}
                                                 fontSize={23}
                                                 keyboardType="numeric"
                                                 textAlign="center"
+                                                onChangeText={() => this.refs['4th'].focus()}
                                             />
                                         </View>
                                         <View style={styles.otpSqr}>
                                             <TextInput
+                                                ref={'4th'}
                                                 maxLength={1}
                                                 onChangeText={() => { this.refs.swiper.scrollBy(1), this.setState({ dbc3: '#FA8072' }) }}
                                                 fontSize={23}

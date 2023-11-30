@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
+import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity, Modal } from "react-native";
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import CalendarPicker from 'react-native-calendar-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import KeyboardShift from "@fullstackcraft/react-native-keyboard-shift/lib/components/KeyboardShift";
 
 
@@ -27,28 +29,28 @@ const DATA = [
 const Item = () => (
     <TouchableOpacity style={styles.flatItem}>
         <Image style={{ height: 120, width: 118, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/bus.jpg')} />
-        <Text style={{color: '#707070'}}>BusTravel Tours</Text>
+        <Text style={{ color: '#707070' }}>BusTravel Tours</Text>
         <View style={{ height: '10%', width: '100%', flexDirection: 'row', }}>
-            <View style={{ height: '100%', width: '20%', flexDirection: 'row',  alignItems: 'center',  }}>
+            <View style={{ height: '100%', width: '20%', flexDirection: 'row', alignItems: 'center', }}>
                 <Ionicons name='location' color='#FA8072' />
             </View>
-            <View style={{ height: '100%', width: '80%', flexDirection: 'row',  alignItems: 'center', }}>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center', }}>
                 <Text style={{ fontSize: 9, color: '#707070' }}>Gaborone - Francistown</Text>
             </View>
         </View>
         <View style={{ height: '10%', width: '100%', flexDirection: 'row', }}>
-            <View style={{ height: '100%', width: '20%', flexDirection: 'row',  alignItems: 'center',  }}>
+            <View style={{ height: '100%', width: '20%', flexDirection: 'row', alignItems: 'center', }}>
                 <FontAwesome5 name='clock' color='#FA8072' />
             </View>
-            <View style={{ height: '100%', width: '80%', flexDirection: 'row',  alignItems: 'center',  }}>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center', }}>
                 <Text style={{ fontSize: 9, color: '#707070' }}>0800hrs - 1730hrs</Text>
             </View>
         </View>
-        <View style={{ height: '10%', width: '100%', flexDirection: 'row',  }}>
+        <View style={{ height: '10%', width: '100%', flexDirection: 'row', }}>
             <View style={{ height: '100%', width: '20%', flexDirection: 'row', alignItems: 'center', }}>
                 <Ionicons name='map-sharp' color='#FA8072' />
             </View>
-            <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center',  }}>
+            <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center', }}>
                 <Text style={{ fontSize: 9, color: '#707070' }}>0800hrs - 1730hrs</Text>
             </View>
         </View>
@@ -63,19 +65,35 @@ const separator = () => {
     )
 };
 
+//const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+};
+
+const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+};
 
 export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            cal: false
         }
     }
+
 
     render() {
         return (
             <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+
                 <View style={styles.top}>
                     <View style={styles.logoCon}>
                         <Image style={styles.logo} source={require('../assets/logo.png')} />
@@ -92,19 +110,27 @@ export default class Home extends React.Component {
                         </View>
                         <View style={styles.midCard2}>
                             <TextInput
+                                fontSize={20}
                                 style={styles.txtfld}
                             />
-                             
+
                             <TextInput
+                                fontSize={20}
                                 style={styles.txtfld}
                             />
                         </View>
                         <View style={styles.midCard3}>
                             <View style={{ height: '100%', width: '50%', justifyContent: 'center' }}>
-                                <Pressable style={{ height: 27, width: 94, borderRadius: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FA8072' }}>
+                                <Pressable onPress={()=> this.setState({cal: true})} style={{ height: 27, width: 94, borderRadius: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FA8072' }}>
                                     <Text style={{ color: "#fff", paddingRight: "10%" }}>Date</Text>
                                     <Ionicons name="calendar" color="#fff" size={20} />
                                 </Pressable>
+                                <DateTimePickerModal
+                                    isVisible={this.state.cal}
+                                    mode="date"
+                                    onConfirm={handleConfirm}
+                                    onCancel={hideDatePicker}
+                                />
                             </View>
                             <View style={{ height: '100%', width: '50%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '10%', }}>
                                 <Pressable style={{ height: 26, width: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F2EEED' }}>
@@ -143,7 +169,7 @@ export default class Home extends React.Component {
                     </SafeAreaView>
                 </View>
 
-              
+
             </KeyboardAwareScrollView>
 
         )
@@ -166,7 +192,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-      //backgroundColor: 'red'
+        //backgroundColor: 'red'
     },
 
     logoCon: {
@@ -230,6 +256,7 @@ const styles = StyleSheet.create({
     },
 
     txtfld: {
+        paddingLeft: '4%',
         height: 38,
         width: '100',
         borderRadius: 11,
@@ -293,5 +320,25 @@ const styles = StyleSheet.create({
             }
         }),
 
+    },
+
+    modal: {
+        height: '30%',
+        width: '90%',
+        marginTop: '50%',
+        alignSelf: 'center',
+        borderRadius: 20,
+        backgroundColor: '#fff',
+        ...Platform.select({
+            ios: {
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.4,
+                shadowRadius: 3,
+            },
+            android: {
+                elevation: 5
+            }
+        })
     }
+
 });
