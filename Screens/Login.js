@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
     },
 
     top: {
-       // backgroundColor: '#c1c1c1',
-        height: '20%',
+        //backgroundColor: '#c1c1c1',
+        height: 148,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 
     mid: {
         //backgroundColor: '#FA8072',
-        height: '40%',
+        height: 290,
         width: '100%',
     },
 
