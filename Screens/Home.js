@@ -51,7 +51,7 @@ const Item = () => (
                 <Ionicons name='map-sharp' color='#FA8072' />
             </View>
             <View style={{ height: '100%', width: '80%', flexDirection: 'row', alignItems: 'center', }}>
-                <Text style={{ fontSize: 9, color: '#707070' }}>0800hrs - 1730hrs</Text>
+                <Text style={{ fontSize: 9, color: '#707070' }}>376 km</Text>
             </View>
         </View>
 
@@ -167,7 +167,7 @@ export default class Home extends React.Component {
 
                 <View style={styles.bot}>
                     <View style={styles.bot1}>
-                        <Text style={{ fontSize: 21, fontWeight: '300', color: '#707070' }}>Favourite Routes</Text>
+                        <Text style={{ fontSize: 21, fontWeight: '300', color: '#707070' }}>Recent Routes</Text>
                     </View>
                     <SafeAreaView style={styles.bot2}>
                         <FlatList

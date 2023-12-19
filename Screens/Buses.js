@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -7,7 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 const DATA = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
+        title: 'Bus Travels',
     },
     {
         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -21,75 +22,10 @@ const DATA = [
 
 ];
 
-const Item = () => (
-    <TouchableOpacity style={styles.flatItem}>
-        <View style={styles.cardtop}>
-            <View style={styles.logo}>
-                <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/cardart.jpg')} />
-            </View>
-            <View style={styles.title}>
-                <Text style={{ fontSize: 15, color: '#707070' }}>Sharearide Travel & Tours</Text>
-            </View>
-            <View style={styles.price}>
-                <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P 350.00</Text>
-                </View>
-            </View>
-        </View>
-        <View style={styles.cardmid}>
-            <View style={styles.departure}>
-                <Text style={{ fontSize: 12, color: '#707070', }}>Gaborone</Text>
-                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>8:00 AM</Text>
-            </View>
-            <View style={styles.froTo}>
-                <View style={{height: 10, width: 10, borderRadius: 5, borderColor: '#429588', borderWidth: 1}}/>
-                <View style={{height: 0, width: 78, borderColor: '#707070', borderWidth: 0.5}}/>
-                <View style={{height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1}}/>
-            </View>
-            <View style={styles.destination}>
-                <Text style={{ fontSize: 12, color: '#707070', }}>Francistown</Text>
-                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>5:30 PM</Text>
-            </View>
-
-        </View>
-        <View style={styles.cardbot}>
-            <View style={styles.time}>
-                <FontAwesome5 name='clock' size={20} color='#FA8072'/>
-                <Text style={{ fontSize: 12, color: '#707070', }}>9hrs</Text>
-            </View>
-            <View style={styles.distance}>
-                <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072'/>
-                <Text style={{ fontSize: 12, color: '#707070', }}>250km</Text>
-            </View>
-            <View style={styles.seats}>
-                <MaterialCommunityIcons name='seat' size={20} color='#FA8072'/>
-                <Text style={{ fontSize: 12, color: '#707070', }}>45/50</Text>
-            </View>
-            <View style={styles.date}>
-                <Ionicons name='calendar' size={15} color='#FA8072'/>
-                <Text style={{ fontSize: 12, color: '#707070', }}>07/10/23</Text>
-            </View>
-        </View>
-    </TouchableOpacity>
-);
-
-const separator = () => {
-    return (
-        <View style={{ height: 10 }} />
-    )
-};
 
 
-export default class Buses extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-
-    render() {
+export default function Buses() {
+    const navigation = useNavigation();
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
@@ -109,17 +45,69 @@ export default class Buses extends React.Component {
                         style={{ height: '100%' }}
                         //ItemSeparatorComponent={separator}
                         data={DATA}
-                        renderItem={Item}
+                        //renderItem={Item, Index}
                         keyExtractor={item => item.id}
-                    //extraData={selectedId}
-                    //horizontal={true}
+                        renderItem={({ item }) => {
+                            return (
+                                <TouchableOpacity onPress={() => navigation.navigate('Details')} style={styles.flatItem}>
+                                    <View style={styles.cardtop}>
+                                        <View style={styles.logo}>
+                                            <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/cardart.jpg')} />
+                                        </View>
+                                        <View style={styles.title}>
+                                            <Text style={{ fontSize: 15, color: '#707070' }}>Sharearide Travel & Tours</Text>
+                                        </View>
+                                        <View style={styles.price}>
+                                            <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
+                                                <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P 350.00</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View style={styles.cardmid}>
+                                        <View style={styles.departure}>
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>Gaborone</Text>
+                                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>8:00 AM</Text>
+                                        </View>
+                                        <View style={styles.froTo}>
+                                            <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#429588', borderWidth: 1 }} />
+                                            <View style={{ height: 0, width: 78, borderColor: '#707070', borderWidth: 0.5 }} />
+                                            <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
+                                        </View>
+                                        <View style={styles.destination}>
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>Francistown</Text>
+                                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>5:30 PM</Text>
+                                        </View>
+
+                                    </View>
+                                    <View style={styles.cardbot}>
+                                        <View style={styles.time}>
+                                            <FontAwesome5 name='clock' size={20} color='#FA8072' />
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>9hrs</Text>
+                                        </View>
+                                        <View style={styles.distance}>
+                                            <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>250km</Text>
+                                        </View>
+                                        <View style={styles.seats}>
+                                            <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>45/50</Text>
+                                        </View>
+                                        <View style={styles.date}>
+                                            <Ionicons name='calendar' size={15} color='#FA8072' />
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>07/10/23</Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }}
+
                     />
 
                 </SafeAreaView>
             </View>
 
         )
-    }
+    
 }
 
 const styles = StyleSheet.create({
@@ -133,7 +121,7 @@ const styles = StyleSheet.create({
     },
 
     top: {
-       // backgroundColor: '#c1c1c1',
+        // backgroundColor: '#c1c1c1',
         height: '10%',
         width: '100%',
         justifyContent: 'center',
@@ -280,8 +268,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-       
-    }, 
+
+    },
 
     seats: {
         height: '100%',
