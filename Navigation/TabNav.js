@@ -6,6 +6,7 @@ import Buses from "../Screens/Buses";
 import Profile from "../Screens/Profile";
 import Settings from "../Screens/Settings";
 import { color } from '@rneui/base';
+import UserNav from './UserNav';
 
 
 const Tab = createBottomTabNavigator();
@@ -88,7 +89,7 @@ function Land() {
 }
 
 function Activity() {
-  return <Buses />;
+  return <UserNav />;
 }
 
 function Prof() {

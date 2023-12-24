@@ -20,11 +20,7 @@ export default function AuthNav(){
           component={Register}
           options={{ headerShown: false }} 
         />
-        <Stack.Screen 
-          name="Details" 
-          component={Details}
-          options={{ headerShown: false }} 
-        />
+        
       </Stack.Navigator>
   );
 }

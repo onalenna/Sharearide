@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fullstackcraft/react-native-keyboard-shift": "^1.1.5-alpha0",
+    "@mindinventory/react-native-bus-seat-layout": "^1.0.2",
     "@react-native-community/checkbox": "^0.5.16",
     "@react-native-community/datetimepicker": "7.2.0",
     "@react-native-masked-view/masked-view": "0.2.9",

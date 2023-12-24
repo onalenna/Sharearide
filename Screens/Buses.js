@@ -243,7 +243,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: '4%',
         paddingBottom: '4%',
-        backgroundColor: '#fff'
 
     },
 
