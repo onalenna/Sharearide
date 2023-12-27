@@ -10,61 +10,158 @@ const windowHeight = Dimensions.get('window').height;
 
 
 export default function Seats() {
+    const selectedSeats = [];
     const [row1, setRow1] = useState([
-        { empty: false, selected: false },
-        { empty: false, selected: true },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: false, selected: false },
-        { empty: false, selected: true },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
+        { empty: true, selected: false, id: 'A1' },
+        { empty: true, selected: false, id: 'A2' },
+        { empty: true, selected: false, id: 'B1' },
+        { empty: true, selected: false, id: 'B2' },
+        { empty: true, selected: false, id: 'C1' },
+        { empty: true, selected: false, id: 'C2' },
+        { empty: true, selected: false, id: 'D1' },
+        { empty: true, selected: false, id: 'D2' },
+        { empty: true, selected: false, id: 'E1' },
+        { empty: true, selected: false, id: 'E2' },
+        { empty: true, selected: false, id: 'F1' },
+        { empty: true, selected: false, id: 'F2' },
+        { empty: true, selected: false, id: 'G1' },
+        { empty: true, selected: false, id: 'G2' },
+        { empty: true, selected: false, id: 'H1' },
+        { empty: true, selected: false, id: 'H2' },
+        { empty: true, selected: false, id: 'I1' },
+        { empty: true, selected: false, id: 'I2' },
+        { empty: true, selected: false, id: 'J1' },
+        { empty: true, selected: false, id: 'J2' },
     ]);
 
     const [row2, setRow2] = useState([
-        { empty: false, selected: false },
-        { empty: false, selected: true },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: false, selected: false },
-        { empty: false, selected: true },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: false, selected: false },
-        { empty: false, selected: true },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
-        { empty: true, selected: false },
+        { empty: true, selected: false, id: 'A3' },
+        { empty: true, selected: false, id: 'A4' },
+        { empty: true, selected: false, id: 'A5' },
+        { empty: true, selected: false, id: 'B3' },
+        { empty: true, selected: false, id: 'B4' },
+        { empty: true, selected: false, id: 'B5' },
+        { empty: true, selected: false, id: 'C3' },
+        { empty: true, selected: false, id: 'C4' },
+        { empty: true, selected: false, id: 'C5' },
+        { empty: true, selected: false, id: 'D3' },
+        { empty: true, selected: false, id: 'D4' },
+        { empty: true, selected: false, id: 'D5' },
+        { empty: true, selected: false, id: 'E3' },
+        { empty: true, selected: false, id: 'E4' },
+        { empty: true, selected: false, id: 'E5' },
+        { empty: true, selected: false, id: 'F3' },
+        { empty: true, selected: false, id: 'F4' },
+        { empty: true, selected: false, id: 'F5' },
+        { empty: true, selected: false, id: 'G3' },
+        { empty: true, selected: false, id: 'G4' },
+        { empty: true, selected: false, id: 'G5' },
+        { empty: true, selected: false, id: 'H3' },
+        { empty: true, selected: false, id: 'H4' },
+        { empty: true, selected: false, id: 'H5' },
+        { empty: true, selected: false, id: 'I3' },
+        { empty: true, selected: false, id: 'I4' },
+        { empty: true, selected: false, id: 'I5' },
+        { empty: true, selected: false, id: 'J3' },
+        { empty: true, selected: false, id: 'J4' },
+        { empty: true, selected: false, id: 'J5' },
     ]);
+
+    const [row3, setRow3] = useState([
+        { empty: true, selected: false, id: 'K1' },
+        { empty: true, selected: false, id: 'K2' },
+        { empty: true, selected: false, id: 'K3' },
+        { empty: true, selected: false, id: 'K4' },
+        { empty: true, selected: false, id: 'K5' },
+        { empty: true, selected: false, id: 'K6' },
+    ]);
+
+    const onSelectRow1 = index => {
+        let tempRow = [];
+        tempRow = row1;
+        tempRow.map((item, idx) => {
+            if (index == idx) {
+                if (item.selected == true) {
+                    item.selected = false;
+                    item.empty = true;
+                } else {
+                    item.selected = true;
+                    item.empty = false;
+                }
+            }
+        });
+        let tempSeats = [];
+        tempRow.map(item => {
+            tempSeats.push(item);
+
+        });
+        setRow1(tempSeats);
+
+
+    }
+
+    const onSelectRow2 = index => {
+        let tempRow = [];
+        tempRow = row2;
+        tempRow.map((item, idx) => {
+            if (index == idx) {
+                if (item.selected == true) {
+                    item.selected = false;
+                    item.empty = true;
+                } else {
+                    item.selected = true;
+                    item.empty = false;
+                }
+            }
+        });
+        let tempSeats = [];
+        tempRow.map(item => {
+            tempSeats.push(item);
+        });
+        setRow2(tempSeats);
+    }
+
+    const onSelectRow3 = index => {
+        let tempRow = [];
+        tempRow = row3;
+        tempRow.map((item, idx) => {
+            if (index == idx) {
+                if (item.selected == true) {
+                    item.selected = false;
+                    item.empty = true;
+                } else {
+                    item.selected = true;
+                    item.empty = false;
+                }
+            }
+        });
+        let tempSeats = [];
+        tempRow.map(item => {
+            tempSeats.push(item);
+        });
+        setRow3(tempSeats);
+    }
+
+    const getSeats = () => {
+        row1.map(item => {
+            if (item.selected == true) {
+                selectedSeats.push(1);
+            }
+        });
+        row2.map(item => {
+            if (item.selected == true) {
+                selectedSeats.push(1);
+            }
+        });
+        row3.map(item => {
+            if (item.selected == true) {
+                selectedSeats.push(1);
+            }
+        });
+
+        return selectedSeats.length;
+
+    };
 
     const navigation = useNavigation();
     return (
@@ -85,11 +182,11 @@ export default function Seats() {
                 <View style={styles.mid1}>
                     <View style={styles.key}>
                         <View style={styles.keyBooked} />
-                        <Text style={styles.keyText}>Available</Text>
+                        <Text style={styles.keyText}>Booked</Text>
                     </View>
                     <View style={styles.key}>
                         <View style={styles.keyAvailable} />
-                        <Text style={styles.keyText}>Booked</Text>
+                        <Text style={styles.keyText}>Available</Text>
                     </View>
                     <View style={styles.key}>
                         <View style={styles.keySelected} />
@@ -104,47 +201,105 @@ export default function Seats() {
                         <TextInput placeholder="Passenger name" style={{ height: '100%', width: '85%', fontSize: 18, paddingLeft: '2%', }} />
                     </View>
                 </View> */}
-                <View style={styles.mid3}>
-                    <View style={styles.leftRows}>
-                        <FlatList
-                            numColumns={2}
-                            style={{ height: '100%', }}
-                            data={row1}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => {
-                                return (
-                                    <TouchableOpacity style={{ marginRight: 20, marginLeft: 20, marginBottom: 15 }}>
-                                        {
-                                            item.empty == false && item.selected == true ? (
-                                                <Image source={require('../assets/seat.png')}
-                                                    style={{ height: 30, width: 30, tintColor: '#FA8072' }}
-                                                />
-                                            ) : item.empty == true && item.selected == false ? (
-                                                <Image
-                                                    source={require('../assets/seat.png')}
-                                                    style={{ height: 30, width: 30, tintColor: '#D1D1D1' }}
-                                                />
-                                            ) : item.empty == false && item.selected == false ? (
-                                                <Image source={require('../assets/seat.png')}
-                                                    style={{ height: 30, width: 30, tintColor: '#429588' }}
-                                                />
-                                            ) : null
-                                        }
-                                    </TouchableOpacity>
-                                )
-                            }}
-
-                        />
+                <View style={styles.mid4}>
+                    <View style={{height: '100%', width: '70%', justifyContent: 'center', paddingLeft: '8%'}}>
+                        <Text style={{color: '#707070', fontSize: 15}}>{'Selected Seats ('+getSeats()+')'}</Text>
                     </View>
-                    <View style={styles.RightRows}>
+                    <View style={{height: '100%', width: '30%', alignItems: 'center', justifyContent: 'center'}}>
+                        <MaterialCommunityIcons name="steering" size={35} color={'#707070'} />
+                    </View>
+                </View>
+                <View style={styles.mid3}>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={styles.leftRows}>
+                            <FlatList
+                                numColumns={2}
+                                style={{ height: '100%', }}
+                                data={row1}
+                                keyExtractor={item => item.id}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <TouchableOpacity style={{ marginLeft: 15, marginTop: 9 }} onPress={() => {
+                                            if (item.selected == false && item.empty == false) {
+                                                alert('Already Booked');
+                                            } else {
+                                                onSelectRow1(index);
+                                            }
+                                        }} >
+                                            {
+                                                item.empty == false && item.selected == true ? (
+                                                    <Image source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#FA8072' }}
+                                                    />
+                                                ) : item.empty == true && item.selected == false ? (
+                                                    <Image
+                                                        source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#429588' }}
+                                                    />
+                                                ) : item.empty == false && item.selected == false ? (
+                                                    <Image source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#D1D1D1' }}
+                                                    />
+                                                ) : null
+                                            }
+                                        </TouchableOpacity>
+                                    )
+                                }}
+
+                            />
+                        </View>
+                        <View style={styles.rightRows}>
+                            <FlatList
+                                numColumns={3}
+                                style={{ height: '100%', }}
+                                data={row2}
+                                keyExtractor={item => item.id}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <TouchableOpacity style={{ marginRight: 10, marginLeft: 10, marginTop: 9 }} onPress={() => {
+                                            if (item.selected == false && item.empty == false) {
+                                                alert('Already Booked');
+                                            } else {
+                                                onSelectRow2(index);
+                                            }
+                                        }}>
+                                            {
+                                                item.empty == false && item.selected == true ? (
+                                                    <Image source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#FA8072' }}
+                                                    />
+                                                ) : item.empty == true && item.selected == false ? (
+                                                    <Image
+                                                        source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#429588' }}
+                                                    />
+                                                ) : item.empty == false && item.selected == false ? (
+                                                    <Image source={require('../assets/seat.png')}
+                                                        style={{ height: 30, width: 30, tintColor: '#D1D1D1' }}
+                                                    />
+                                                ) : null
+                                            }
+                                        </TouchableOpacity>
+                                    )
+                                }}
+
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.botRow}>
                         <FlatList
-                            numColumns={3}
-                            style={{ height: '100%', }}
-                            data={row2}
+                            horizontal
+                            data={row3}
                             keyExtractor={item => item.id}
-                            renderItem={({ item }) => {
+                            renderItem={({ item, index }) => {
                                 return (
-                                    <TouchableOpacity style={{ marginRight: 15, marginLeft: 15, marginBottom: 15 }}>
+                                    <TouchableOpacity style={{ marginRight: 10, marginLeft: 10, }} onPress={() => {
+                                        if (item.selected == false && item.empty == false) {
+                                            alert('Already Booked');
+                                        } else {
+                                            onSelectRow3(index);
+                                        }
+                                    }}>
                                         {
                                             item.empty == false && item.selected == true ? (
                                                 <Image source={require('../assets/seat.png')}
@@ -153,11 +308,11 @@ export default function Seats() {
                                             ) : item.empty == true && item.selected == false ? (
                                                 <Image
                                                     source={require('../assets/seat.png')}
-                                                    style={{ height: 30, width: 30, tintColor: '#D1D1D1' }}
+                                                    style={{ height: 30, width: 30, tintColor: '#429588' }}
                                                 />
                                             ) : item.empty == false && item.selected == false ? (
                                                 <Image source={require('../assets/seat.png')}
-                                                    style={{ height: 30, width: 30, tintColor: '#429588' }}
+                                                    style={{ height: 30, width: 30, tintColor: '#D1D1D1' }}
                                                 />
                                             ) : null
                                         }
@@ -168,6 +323,7 @@ export default function Seats() {
                         />
                     </View>
                 </View>
+
             </View>
 
             <View style={styles.bot}>
@@ -295,24 +451,33 @@ const styles = StyleSheet.create({
     },
 
     mid3: {
-        height: '90%',
+        height: '80%',
         width: '100%',
-        flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: '#FA8072'
     },
 
     leftRows: {
-        height: '90%',
+        height: '100%',
         width: '40%',
         alignItems: 'center',
-        backgroundColor: 'red'
     },
 
-    RightRows: {
-        height: '90%',
+    rightRows: {
+        height: '100%',
         width: '60%',
         alignItems: 'center',
+    },
+
+    botRow: {
+        height: '10%',
+        padding: '2%',
+        alignItems: 'center',
+    },
+
+    mid4: {
+        height: '10%',
+        width: '100%',
+        flexDirection: 'row',
     },
 
 
