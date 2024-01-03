@@ -86,7 +86,7 @@ export default function Buses() {
                                         </View>
                                         <View style={styles.distance}>
                                             <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>250km</Text>
+                                            <Text style={{ fontSize: 12, color: '#707070', }}>260km</Text>
                                         </View>
                                         <View style={styles.seats}>
                                             <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
