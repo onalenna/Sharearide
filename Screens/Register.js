@@ -1,18 +1,13 @@
-import React, { Component, useRef, useState } from "react";
+import React, { Component } from "react";
 import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable, } from "react-native";
 import { CheckBox } from '@rneui/themed';
 import Swiper from 'react-native-swiper'
 import { Ionicons } from '@expo/vector-icons';
-import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-
-
-export default class Register extends React.Component {
-
-
+export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,11 +18,15 @@ export default class Register extends React.Component {
             opacity: 0.5,
             disabled: true,
             cntn: 'flex',
-            focus2: false
+            focus2: false,
+            firstname: "",
+            lastname: "",
+            gender: "",
+            email: "",
+            number: "",
+            password: "",
         }
     }
-
-
 
     checked() {
         if (this.state.check == false) {
@@ -42,17 +41,28 @@ export default class Register extends React.Component {
         console.warn('continue button is pressed')
     }
 
+    validateFields = () => {
+        const { firstname, lastname, gender, email, number, password } = this.state;
+        if (this.state.idx === 0) {
+            return !!firstname && !!lastname && !!gender;
+        } else if (this.state.idx === 1) {
+            return !!email && !!number;
+        } else if (this.state.idx === 2) {
+            return !!password;
+        }
+    };
+
     onSwipe() {
+        if (!this.validateFields()) {
+            alert('Please fill all visible form fields before continuing.');
+            return;
+        }
 
         this.refs.otp.scrollBy(1)
         this.setState({ cntn: 'none' })
-
-
     }
 
-
     render() {
-
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
@@ -65,7 +75,6 @@ export default class Register extends React.Component {
                 </View>
                 <View style={{ height: 500 }}>
                     <Swiper
-
                         showsButtons={false}
                         loop={false}
                         index={this.state.idx}
@@ -83,14 +92,20 @@ export default class Register extends React.Component {
                                 <TextInput
                                     placeholder='Firstname' fontSize={18}
                                     style={styles.txtfld}
+                                    onChangeText={(firstname) => this.setState({ firstname })}
+                                    value={this.state.firstname}
                                 />
                                 <TextInput
                                     placeholder='Lastname' fontSize={18}
                                     style={styles.txtfld2}
+                                    onChangeText={(lastname) => this.setState({ lastname })}
+                                    value={this.state.lastname}
                                 />
                                 <TextInput
                                     placeholder='Gender' fontSize={18}
                                     style={styles.txtfld3}
+                                    onChangeText={(gender) => this.setState({ gender })}
+                                    value={this.state.gender}
                                 />
                             </View>
 
@@ -118,10 +133,14 @@ export default class Register extends React.Component {
                                         <TextInput
                                             placeholder='Email' fontSize={18}
                                             style={styles.txtfld}
+                                            onChangeText={(email) => this.setState({ email })}
+                                            value={this.state.email}
                                         />
                                         <TextInput
                                             placeholder='Number' fontSize={18}
                                             style={styles.txtfld2}
+                                            onChangeText={(number) => this.setState({ number })}
+                                            value={this.state.number}
                                         />
                                     </View>
                                 </View>
@@ -196,6 +215,8 @@ export default class Register extends React.Component {
                                 <TextInput
                                     placeholder='Password' fontSize={18}
                                     style={styles.txtfld}
+                                    onChangeText={(password) => this.setState({ password })}
+                                    value={this.state.password}
                                 />
                                 <TextInput
                                     placeholder='Confirm Password' fontSize={18}
@@ -246,7 +267,6 @@ const styles = StyleSheet.create({
     },
 
     top: {
-        //backgroundColor: '#c1c1c1',
         height: '10%',
         width: '100%',
         justifyContent: 'center',
@@ -259,7 +279,6 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: 'center',
         paddingLeft: '10%',
-
     },
 
     logoCon: {
@@ -267,7 +286,6 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
-
     },
 
     logo: {
@@ -275,9 +293,7 @@ const styles = StyleSheet.create({
         width: '66%',
     },
 
-
     midtxt: {
-        //backgroundColor: 'blue',
         height: '20%',
         width: '100%',
         paddingLeft: '10%',
@@ -285,10 +301,8 @@ const styles = StyleSheet.create({
     },
 
     midfld: {
-        //backgroundColor: 'red',
         height: '40%',
         width: '100%',
-        //justifyContent: 'center',
         alignItems: 'center',
     },
 
@@ -319,11 +333,9 @@ const styles = StyleSheet.create({
     },
 
     midbtn: {
-        //backgroundColor: 'green',
         padding: '6%',
         height: '40%',
         width: '100%',
-        //justifyContent: 'center',
         alignItems: 'center',
     },
 
@@ -338,7 +350,6 @@ const styles = StyleSheet.create({
     },
 
     bot: {
-        //backgroundColor: '#429588',
         height: '20%',
         width: '100%',
         justifyContent: 'center',
@@ -384,7 +395,6 @@ const styles = StyleSheet.create({
     },
 
     bot1: {
-        //backgroundColor: 'red',
         height: '20%',
         width: '100%',
         alignItems: 'center',
@@ -400,7 +410,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         marginBottom: '10%',
-        //backgroundColor: '#c1c1c1'
     },
 
     otpSqr: {
@@ -421,7 +430,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     }
-
-
-
 });

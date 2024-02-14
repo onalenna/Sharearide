@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, KeyboardAvoidingView,Keyboard } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, KeyboardAvoidingView, Keyboard } from "react-native";
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,57 +15,67 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userEmail:'',
-			userPassword:''
+            userEmail: '',
+            userPassword: '',
+            emailError: ''
         }
     }
 
-    
+
     login = () => {
         const { userEmail, userPassword } = this.state;
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (userEmail === "") {
-          this.setState({ email: 'Please enter an Email address' });
+            this.setState({ emailError: 'Please enter an Email address' });
         } else if (reg.test(userEmail) === false) {
-          this.setState({ email: 'Email is Not Correct' });
-          return false;
+            this.setState({ emailError: 'Email is Not Correct' });
+            return false;
         } else if (userPassword === "") {
-          this.setState({ email: 'Please enter password' });
-          return false;
+            this.setState({ emailError: 'Please enter password' });
+            return false;
         } else {
-          fetch('http://propiq.tech/SR/login.php', {
-            method: 'post',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: userEmail,
-              password: userPassword,
-            }),
-          })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              if (responseJson.status === "ok") {
-                // Navigate to Landing and pass user details
-               // alert("logged in as :"+responseJson.user );
-                this.props.navigation.navigate('Landing', { user: responseJson });
-
-                
-                
-              } else {
-                alert(" " + responseJson.status);
-              }
+            fetch('http://propiq.tech/SR/login.php', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userEmail: userEmail,
+                    password: userPassword,
+                }),
             })
-            .catch((error) => {
-              console.error(error);
-              alert("An error occurred. Please try again.");
-            });
+                .then(response => response.json())
+                .then(responseJson => {
+                    if (responseJson.status === "ok" || responseJson.status == 200) {
+                        const { fname } = responseJson.user; // Extract fname from the response
+                        this.props.navigation.navigate('Landing', { fname: fname }); // Pass fname to the landing page
+                        this.storeAsync(fname)
+                        //alert(fname);
+                    } else {
+                        alert(" " + responseJson.status);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert("An error occurred. Please try again.");
+                });
         }
-      
+
         Keyboard.dismiss();
-      }
-      
+    }
+
+    storeAsync = async (fname) => {
+        try {
+            await AsyncStorage.setItem('name', fname)
+        }
+        catch (e) {
+            console.log()
+        }
+
+    }
+
+
 
     signup() {
         return (
@@ -88,23 +99,30 @@ export default class Login extends React.Component {
 
                     <View style={styles.midfld}>
                         <View style={styles.txtfld}>
-                            <View style={{height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 8, borderTopLeftRadius: 8,}}>
-                                <Ionicons name="mail" size={20} color="#707070"/>
+                            <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 8, borderTopLeftRadius: 8, }}>
+                                <Ionicons name="mail" size={20} color="#707070" />
                             </View>
-                            <View style={{height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
-                                <TextInput placeholder='Email' fontSize={18} style={{height: '100%', width: '100%'}}
-                                onChangeText={userEmail => this.setState({userEmail})}
+                            <View style={{ height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
+                                <TextInput
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    onChangeText={userEmail => this.setState({ userEmail, emailError: '' })}
+                                    style={{ height: '100%', width: '100%', fontSize: 18 }}
+                                    placeholder="Email"
                                 />
                             </View>
                         </View>
 
                         <View style={styles.txtfld2}>
-                            <View style={{height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 8, borderTopLeftRadius: 8,}}>
-                                <Ionicons name="lock-closed" size={20} color="#707070"/>
+                            <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 8, borderTopLeftRadius: 8, }}>
+                                <Ionicons name="lock-closed" size={20} color="#707070" />
                             </View>
-                            <View style={{height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
-                                <TextInput placeholder='Password' fontSize={18} style={{height: '100%', width: '100%'}}
-                                onChangeText={userPassword => this.setState({userPassword})}
+                            <View style={{ height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
+                                <TextInput
+                                    onChangeText={userPassword => this.setState({ userPassword })}
+                                    style={{ height: '100%', width: '100%', fontSize: 18 }}
+                                    placeholder="Password"
+                                    secureTextEntry
                                 />
                             </View>
                         </View>
@@ -193,7 +211,7 @@ const styles = StyleSheet.create({
     },
 
     midfld: {
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
         height: '60%',
         width: '100%',
         justifyContent: 'center',
@@ -285,3 +303,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
+

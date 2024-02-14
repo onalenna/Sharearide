@@ -3,6 +3,7 @@ import { useNavigation, } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions, Pressable, FlatList, Image, ScrollView } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import SeatsLayout from '@mindinventory/react-native-bus-seat-layout';
+import { useRoute } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,6 +11,12 @@ const windowHeight = Dimensions.get('window').height;
 
 
 export default function Seats() {
+
+    const route = useRoute();
+    const { tripDetails } = route.params;
+
+    console.log('tripDetails:', tripDetails);
+        
     const selectedSeats = [];
     const [row1, setRow1] = useState([
         { empty: true, selected: false, id: 'A1' },

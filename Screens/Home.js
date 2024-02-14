@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   View,
   Text,
@@ -12,7 +14,7 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { Ionicons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import CalendarPicker from "react-native-calendar-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationContainer } from '@react-navigation/native';  // Add this import
@@ -64,12 +66,20 @@ const separator = () => {
 
 export default function Home() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const fname = route.params?.fname;
+ // console.log("fname received:", route.params);
 
+  // Extracting user email from navigation parameters
+
+
+
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [routes, setRoutes] = useState([]);
   const [cal, setCal] = useState(false);
   const [num, setNum] = useState(0);
-  const [user, setUser] = useState("");
+  //const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -109,7 +119,20 @@ export default function Home() {
     if (num > 0) {
       setNum((prevNum) => prevNum - 1);
     }
+    getAsync();
   };
+ // const [user, setUser] = useState(route.params.user);
+ getAsync = async () => {
+  try {
+     const nam = await AsyncStorage.getItem('name')
+     alert(nam)
+  }
+  catch (e) {
+      console.log(e)
+  }
+
+}
+
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -117,11 +140,12 @@ export default function Home() {
         <View style={styles.logoCon}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
         </View>
-        <View style={styles.wlcm}>
+        <TouchableOpacity style={styles.wlcm}>
           <Text style={{ fontSize: 18, color: "#707070" }}>
-            {user ? user : ""}
+           Welcome,
           </Text>
-        </View>
+          <FontAwesome name="user-circle" size={20}/>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mid}>
@@ -290,8 +314,9 @@ const styles = StyleSheet.create({
   wlcm: {
     height: "100%",
     width: "50%",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
+    flexDirection: 'row',
   },
 
   mid: {

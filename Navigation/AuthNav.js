@@ -3,7 +3,7 @@ import Login from "../Screens/Login";
 import Register from "../Screens/Register";
 import UserNav from "../Navigation/UserNav";
 import Details from "../Screens/Details";
-
+import Home from "../Screens/Home";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,12 @@ export default function AuthNav(){
           component={Register}
           options={{ headerShown: false }} 
         />
-        
+        {/* <Stack.Screen 
+          name="Landing" 
+          component={Home}
+          options={{ headerShown: false }} 
+        />
+         */}
       </Stack.Navigator>
   );
 }
