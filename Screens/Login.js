@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, KeyboardAvoidingView,Keyboard } from "react-native";
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -13,9 +14,57 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userEmail:'',
+			userPassword:''
         }
     }
+
+    
+    login = () => {
+        const { userEmail, userPassword } = this.state;
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (userEmail === "") {
+          this.setState({ email: 'Please enter an Email address' });
+        } else if (reg.test(userEmail) === false) {
+          this.setState({ email: 'Email is Not Correct' });
+          return false;
+        } else if (userPassword === "") {
+          this.setState({ email: 'Please enter password' });
+          return false;
+        } else {
+          fetch('http://propiq.tech/SR/login.php', {
+            method: 'post',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: userEmail,
+              password: userPassword,
+            }),
+          })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if (responseJson.status === "ok") {
+                // Navigate to Landing and pass user details
+               // alert("logged in as :"+responseJson.user );
+                this.props.navigation.navigate('Landing', { user: responseJson });
+
+                
+                
+              } else {
+                alert(" " + responseJson.status);
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("An error occurred. Please try again.");
+            });
+        }
+      
+        Keyboard.dismiss();
+      }
+      
 
     signup() {
         return (
@@ -43,7 +92,9 @@ export default class Login extends React.Component {
                                 <Ionicons name="mail" size={20} color="#707070"/>
                             </View>
                             <View style={{height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
-                                <TextInput placeholder='Email' fontSize={18} style={{height: '100%', width: '100%'}}/>
+                                <TextInput placeholder='Email' fontSize={18} style={{height: '100%', width: '100%'}}
+                                onChangeText={userEmail => this.setState({userEmail})}
+                                />
                             </View>
                         </View>
 
@@ -52,7 +103,9 @@ export default class Login extends React.Component {
                                 <Ionicons name="lock-closed" size={20} color="#707070"/>
                             </View>
                             <View style={{height: '100%', width: '80%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 8, borderTopRightRadius: 8, }}>
-                                <TextInput placeholder='Password' fontSize={18} style={{height: '100%', width: '100%'}}/>
+                                <TextInput placeholder='Password' fontSize={18} style={{height: '100%', width: '100%'}}
+                                onChangeText={userPassword => this.setState({userPassword})}
+                                />
                             </View>
                         </View>
 
@@ -62,7 +115,7 @@ export default class Login extends React.Component {
                     </View>
 
                     <View style={styles.midbtn}>
-                        <Pressable onPress={() => this.props.navigation.navigate('Landing')} style={styles.btn}>
+                        <Pressable onPress={this.login} style={styles.btn}>
                             <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>SIGN IN</Text>
                         </Pressable>
                     </View>

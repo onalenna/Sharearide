@@ -1,113 +1,101 @@
-import React, { Component } from "react";
+import React from "react";
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'Bus Travels',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f69',
-        title: 'Second Item',
-    },
-
-
-];
-
-
 
 export default function Buses() {
     const navigation = useNavigation();
-        return (
-            <View style={styles.container}>
-                <View style={styles.top}>
-                    <View style={styles.back}>
-                        <Ionicons name="ios-chevron-back" size={30} color="#707070" />
-                    </View>
-                    <View style={styles.label}>
-                        <Text>Available Trips</Text>
-                    </View>
-                    <View style={styles.notification}>
-                        <Ionicons name="md-notifications-outline" size={20} color="#707070" />
-                    </View>
+    const [tripData, setTripData] = React.useState([]);
+
+    React.useEffect(() => {
+        // Fetch data from PHP endpoint
+        fetch('https://propiq.tech/SR/routes.php')
+            .then(response => response.json())
+            .then(data => {
+               // console.log('Received data:', data); // Log received data for debugging
+                setTripData(data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.top}>
+                <View style={styles.back}>
+                    <Ionicons name="ios-chevron-back" size={30} color="#707070" />
                 </View>
-                <SafeAreaView style={styles.bot}>
-
-                    <FlatList
-                        style={{ height: '100%' }}
-                        //ItemSeparatorComponent={separator}
-                        data={DATA}
-                        //renderItem={Item, Index}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) => {
-                            return (
-                                <TouchableOpacity onPress={() => navigation.navigate('Details')} style={styles.flatItem}>
-                                    <View style={styles.cardtop}>
-                                        <View style={styles.logo}>
-                                            <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/cardart.jpg')} />
-                                        </View>
-                                        <View style={styles.title}>
-                                            <Text style={{ fontSize: 15, color: '#707070' }}>Sharearide Travel & Tours</Text>
-                                        </View>
-                                        <View style={styles.price}>
-                                            <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P 350.00</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                    <View style={styles.cardmid}>
-                                        <View style={styles.departure}>
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>Gaborone</Text>
-                                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>8:00 AM</Text>
-                                        </View>
-                                        <View style={styles.froTo}>
-                                            <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#429588', borderWidth: 1 }} />
-                                            <View style={{ height: 0, width: 78, borderColor: '#707070', borderWidth: 0.5 }} />
-                                            <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
-                                        </View>
-                                        <View style={styles.destination}>
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>Francistown</Text>
-                                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>5:30 PM</Text>
-                                        </View>
-
-                                    </View>
-                                    <View style={styles.cardbot}>
-                                        <View style={styles.time}>
-                                            <FontAwesome5 name='clock' size={20} color='#FA8072' />
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>9hrs</Text>
-                                        </View>
-                                        <View style={styles.distance}>
-                                            <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>250km</Text>
-                                        </View>
-                                        <View style={styles.seats}>
-                                            <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>45/50</Text>
-                                        </View>
-                                        <View style={styles.date}>
-                                            <Ionicons name='calendar' size={15} color='#FA8072' />
-                                            <Text style={{ fontSize: 12, color: '#707070', }}>07/10/23</Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        }}
-
-                    />
-
-                </SafeAreaView>
+                <View style={styles.label}>
+                    <Text>Available Trips</Text>
+                </View>
+                <View style={styles.notification}>
+                    <Ionicons name="md-notifications-outline" size={20} color="#707070" />
+                </View>
             </View>
+            <View style={styles.bot}>
+                <FlatList
+                    style={{ height: '100%' }}
+                    data={tripData}
+                    keyExtractor={item => item.uuid}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity  onPress={() => navigation.navigate('Details', { tripDetails: item })} style={styles.flatItem}>
+                        
+                            <View style={styles.cardtop}>
+                                <View style={styles.logo}>
+                                    <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={{ uri: item.image }} />
+                                </View>
+                                <View style={styles.title}> 
+                                    <Text style={{ fontSize: 15, color: '#707070' }}>{item.company}</Text> 
+                                    <Text style={{ fontSize: 10, color: '#707070' }}> Registration : {item.reg_no}</Text> 
 
-        )
-    
+                                </View>
+                                <View style={styles.price}>
+                                    <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>{`P ${item.fare}`}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.cardmid}>
+                                <View style={styles.departure}> 
+                                    <Text style={{ fontSize: 12, color: '#707070' }}>From : {item.start_city}</Text>
+                                    <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{item.departure}</Text>
+                                </View>
+                                <View style={styles.froTo}>
+                                    <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#429588', borderWidth: 1 }} />
+                                    <View style={{ height: 0, width: 78, borderColor: '#707070', borderWidth: 0.5 }} />
+                                    <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
+                                </View>
+                                <View style={styles.destination}>   
+                                    <Text style={{ fontSize: 12, color: '#707070' }}> To:  {item.end_city}</Text>
+                                    <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{item.arrival}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.cardbot}>
+                                <View style={styles.time}> 
+                                    <FontAwesome5 name='clock' size={20} color='#FA8072' />
+                                    <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.approximate_time}hrs`}</Text>
+                                </View>
+                                <View style={styles.distance}>
+                                    <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
+                                    <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.distance}km`}</Text>
+                                </View>
+                                <View style={styles.seats}> 
+                                    <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
+                                    <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.booking_count}/${item.total_seats}`}</Text>
+                                </View>
+                                <View style={styles.date}>
+                                    <Ionicons name='calendar' size={15} color='#FA8072' />
+                                    <Text style={{ fontSize: 10, color: '#707070' }}>{item.booking_date}</Text> 
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

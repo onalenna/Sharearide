@@ -11,12 +11,15 @@ export default class Details extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            tripDetails: this.props.route.params.tripDetails,
 
         }
     }
     // {JSON.stringify(navigation.getParam('title'))}
     render() {
         const { navigation } = this.props;
+        const { tripDetails } = this.state;
+
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.top}>
@@ -39,21 +42,21 @@ export default class Details extends React.Component {
                     <View style={styles.info}>
                         <View style={styles.cardtop}>
                             <View style={styles.logo}>
-                                <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={require('../assets/cardart.jpg')} />
+                                <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={{ uri: tripDetails.image }} />
                             </View>
                             <View style={styles.title}>
-                                <Text style={{ fontSize: 15, color: '#707070' }}>Sharearide Travel & Tours</Text>
+                                <Text style={{ fontSize: 15, color: '#707070' }}>{tripDetails.company}</Text>
                             </View>
                             <View style={styles.price}>
                                 <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#707070', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P 350.00</Text>
+                                    <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P {tripDetails.fare}</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.cardmid}>
                             <View style={styles.departure}>
-                                <Text style={{ fontSize: 12, color: '#707070', }}>Gaborone</Text>
-                                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>8:00 AM</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.start_city}</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{tripDetails.departure}</Text>
                             </View>
                             <View style={styles.froTo}>
                                 <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#429588', borderWidth: 1 }} />
@@ -61,19 +64,19 @@ export default class Details extends React.Component {
                                 <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
                             </View>
                             <View style={styles.destination}>
-                                <Text style={{ fontSize: 12, color: '#707070', }}>Francistown</Text>
-                                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>5:30 PM</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.end_city}</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{tripDetails.arrival}</Text>
                             </View>
 
                         </View>
                         <View style={styles.cardbot}>
                             <View style={styles.time}>
                                 <FontAwesome5 name='clock' size={20} color='#FA8072' />
-                                <Text style={{ fontSize: 12, color: '#707070', }}>9hrs</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.approximate_time} Hrs</Text>
                             </View>
                             <View style={styles.distance}>
                                 <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
-                                <Text style={{ fontSize: 12, color: '#707070', }}>250km</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.distance} KM </Text>
                             </View>
                             <View style={styles.seats}>
                                 <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
