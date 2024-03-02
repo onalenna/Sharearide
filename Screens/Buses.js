@@ -12,17 +12,22 @@ export default function Buses() {
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        setLoading(true); // Set loading state to true when fetching starts
-        // Fetch data from PHP endpoint
+        setLoading(true);
         fetch('https://propiq.tech/SR/routes.php')
             .then(response => response.json())
             .then(data => {
-                setTripData(data);
-                setLoading(false); // Data fetched, so set loading to false
+                // Filter out duplicate keys
+                const filteredData = data.filter((item, index, self) =>
+                    index === self.findIndex(t => (
+                        t.uuid === item.uuid
+                    ))
+                );
+                setTripData(filteredData);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                setLoading(false); // Set loading to false even on error
+                setLoading(false);
             });
     }, []);
 
@@ -50,6 +55,7 @@ export default function Buses() {
                         data={tripData}
                         keyExtractor={item => item.uuid}
                         renderItem={({ item }) => (
+                            
                             <TouchableOpacity  onPress={() => navigation.navigate('Details', { tripDetails: item })} style={styles.flatItem}>
                                 <View style={styles.cardtop}>
                                     <View style={styles.logo}>
@@ -61,7 +67,7 @@ export default function Buses() {
                                     </View>
                                     <View style={styles.price}>
                                         <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
-                                            <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>{`P ${item.fare}`}</Text>
+                                            <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>{`P ${item.busfare}`}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -83,7 +89,8 @@ export default function Buses() {
                                 <View style={styles.cardbot}>
                                     <View style={styles.time}> 
                                         <FontAwesome5 name='clock' size={20} color='#FA8072' />
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.approximate_time}hrs`}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}>{(item.approximate_time1)}</Text>
+
                                     </View>
                                     <View style={styles.distance}>
                                         <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
@@ -91,11 +98,10 @@ export default function Buses() {
                                     </View>
                                     <View style={styles.seats}> 
                                         <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.booking_count}/${item.total_seats}`}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.total_seats}`}</Text>
                                     </View>
                                     <View style={styles.date}>
-                                        <Ionicons name='calendar' size={15} color='#FA8072' />
-                                        <Text style={{ fontSize: 10, color: '#707070' }}>{item.booking_date}</Text> 
+                                        <Text style={{ fontSize: 10, color: '#707070' }}>{item.allowed_days}</Text> 
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -253,34 +259,39 @@ const styles = StyleSheet.create({
 
     time: {
         height: '100%',
-        width: '15%',
+        width: '23%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
 
     distance: {
         height: '100%',
-        width: '15%',
+        width: '20%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
 
     },
 
-    seats: {
+    seats: { 
         height: '100%',
-        width: '15%',
+        width: '11%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
 
     date: {
         height: '100%',
-        width: '15%',
+        minWidth: '15%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        elevation:5,
+        backgroundColor:'#fffeee',
+        padding:8,
+        borderRadius:10,
+
     }
 });

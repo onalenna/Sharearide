@@ -27,9 +27,6 @@ export default class Login extends React.Component {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (userEmail === "") {
             this.setState({ emailError: 'Please enter an Email address' });
-        } else if (reg.test(userEmail) === false) {
-            this.setState({ emailError: 'Email is Not Correct' });
-            return false;
         } else if (userPassword === "") {
             this.setState({ emailError: 'Please enter password' });
             return false;
@@ -46,11 +43,19 @@ export default class Login extends React.Component {
                 }),
             })
                 .then(response => response.json())
-                .then(responseJson => {
+                .then (async(responseJson) => {
                     if (responseJson.status === "ok" || responseJson.status == 200) {
                         const { fname } = responseJson.user; // Extract fname from the response
+                        const { lname } = responseJson.user;
+                        const { email } = responseJson.user;
+                        const {phone}=responseJson.user;
                         this.props.navigation.navigate('Landing', { fname: fname }); // Pass fname to the landing page
-                        this.storeAsync(fname)
+                        await AsyncStorage.setItem('name', fname );
+                        await AsyncStorage.setItem('lname', lname );
+                        await AsyncStorage.setItem('email', userEmail );
+                        await AsyncStorage.setItem('phone',phone);
+
+
                         //alert(fname);
                     } else {
                         alert(" " + responseJson.status);
@@ -65,15 +70,7 @@ export default class Login extends React.Component {
         Keyboard.dismiss();
     }
 
-    storeAsync = async (fname) => {
-        try {
-            await AsyncStorage.setItem('name', fname)
-        }
-        catch (e) {
-            console.log()
-        }
-
-    }
+   
 
 
 

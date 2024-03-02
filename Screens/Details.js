@@ -1,18 +1,39 @@
 import React, { useEffect,useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, Image, TextInput,Modal, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, ScrollView } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from "expo-location";
 import codegenNativeCommands from "react-native/Libraries/Utilities/codegenNativeCommands";
 
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default function Details( {route}   ) {
     const tripDetails = route.params.tripDetails;
+    //console.log(tripDetails);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const [selectedDay, setSelectedDay] = useState('');
+
+    const handleDaySelection = (day) => {
+        setSelectedDay(day);
+        setIsModalVisible(false);
+      };
+    
+      const renderDayRadioButtons = () => {
+        return tripDetails.allowed_days_origional.split(',').map((day, index) => (
+          <Pressable key={index} onPress={() => handleDaySelection(day.trim())}>
+            <View style={styles.radioButton}>
+              <View style={[styles.radioButtonInner, selectedDay === day.trim() && styles.radioButtonSelected]} />
+              <Text style={styles.dayText}>{day.trim()}</Text>
+            </View>
+          </Pressable>
+        ));
+      };
+    
 
   /*  constructor(props) {
         super(props);
@@ -37,7 +58,9 @@ export default function Details( {route}   ) {
     const [distance, setDistance] = useState(null);
     const [time, setTime] = useState(null);
     const navigation=useNavigation();
-
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+    };
     
     useEffect(() => {
         const getLocation = async () => {
@@ -61,6 +84,13 @@ export default function Details( {route}   ) {
         getLocation();
     }, []);
 
+    const continueToSeats = () => {
+        if (!selectedDay) {
+            alert('Please select a departure day');
+            return;
+        }
+        navigation.navigate('Seats', { tripDetails, selectedDay });
+    };
 
         return (
             <SafeAreaView style={styles.container}>
@@ -105,7 +135,7 @@ export default function Details( {route}   ) {
                             </View>
                             <View style={styles.price}>
                                 <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#707070', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P {tripDetails.fare}</Text>
+                                    <Text style={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}>P {tripDetails.busfare}</Text>
                                 </View>
                             </View>
                         </View>
@@ -128,7 +158,7 @@ export default function Details( {route}   ) {
                         <View style={styles.cardbot}>
                             <View style={styles.time}>
                                 <FontAwesome5 name='clock' size={20} color='#FA8072' />
-                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.approximate_time} Hrs</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.approximate_time1} </Text>
                             </View>
                             <View style={styles.distance}>
                                 <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
@@ -136,19 +166,42 @@ export default function Details( {route}   ) {
                             </View>
                             <View style={styles.seats}>
                                 <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
-                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.booking_count}/ {tripDetails.total_seats}</Text>
+                                <Text style={{ fontSize: 12, color: '#707070', }}> {tripDetails.total_seats}</Text>
                             </View>
-                            <View style={styles.date}>
+                            
+                            <Pressable onPress={toggleModal} style={styles.date}>
                                 <Ionicons name='calendar' size={15} color='#FA8072' />
-                                <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.booking_date}</Text>
-                            </View>
+                                <Text style={{ fontSize: 11, color: '#707070', }}>{selectedDay ? selectedDay : 'Select Date'}</Text>
+
+                            </Pressable>
+                        
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={isModalVisible}
+                                onRequestClose={toggleModal}
+                            >
+                                <View style={styles.modalContainer}>
+                                <Text style={styles.modalItem}>Select Departure Day</Text>
+                                <Text style={styles.modalItemSpacer}></Text>
+                                {renderDayRadioButtons()}
+                                <Pressable onPress={toggleModal} style={styles.closeButton}>
+                                    <Text style={styles.closeButtonText}>Close</Text>
+                                </Pressable>
+                                </View>
+                            </Modal>
+
+                            
                         </View>
                     </View>
                 </View>
                 <View style={styles.bot}>
-                    <View style={styles.bot1}>
-                        <Text style={{ color: '#707070', fontSize: 15 }}>Intermediate Destinations</Text>
-                    </View>
+                <View style={styles.bot1}>
+                    <Text style={{ color: '#707070', fontSize: 15 }}>
+                        {tripDetails.description && tripDetails.description.trim() !== '' ? 'Intermediate Destinations' : 'This is a Direct Route'}
+                    </Text>
+                </View>
+                {tripDetails.description && tripDetails.description.trim() !== '' && (
                     <View style={styles.bot2}>
                         <View style={styles.inter}>
                             <View style={{ height: '100%', width: '30%', justifyContent: 'center', alignItems: 'center',}}>
@@ -157,20 +210,23 @@ export default function Details( {route}   ) {
                                 </View>
                             </View>
                             <View style={{ height: '100%', width: '70%', justifyContent: 'center',}}>
-                                <Text style={{ color: '#707070', fontSize: 15 }}>Palapye Bus Station</Text>
-                                <View style={{height: '40%', width: '25%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
-                                    <FontAwesome5 name="clock" size={20} color='#FA8072' />
-                                    <Text style={{ color: '#707070', fontSize: 15 }}>2 hrs</Text>
+                                <Text style={{ color: '#707070', fontSize: 15 }}> {tripDetails.description}</Text>
+                                <View style={{height: '40%', width: '75%', alignItems: 'left', justifyContent: 'space-between', flexDirection: 'row'}}>
+                                    <Text style={{ color: '#707070', fontSize: 13 }}>15 mins Stop</Text>
                                 </View>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.bot3}>
-                        <Pressable onPress={()=> navigation.navigate('Seats',{ tripDetails })} style={{height: '50%', width: '80%', backgroundColor: '#429588', borderRadius: 18, justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={{fontSize: 18, color: '#fff'}}>Continue</Text>
-                        </Pressable>
-                    </View>
+                )}
+                <View style={styles.bot3}>
+
+                <Pressable onPress={continueToSeats} style={{ height: '50%', width: '80%', backgroundColor: '#429588', borderRadius: 18, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 18, color: '#fff' }}>Continue</Text>
+            </Pressable>
+
                 </View>
+            </View>
+
 
             </SafeAreaView>
 
@@ -187,6 +243,19 @@ const styles = StyleSheet.create({
         width: windowWidth,
         marginTop: '8%'
     },
+    closeButton: {
+        marginTop: 20,
+        padding: 10,
+        backgroundColor: '#429588',
+        borderRadius: 5,
+        width:'20%',
+        alignSelf: 'flex-end',
+    },
+    closeButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    
 
     top: {
         // backgroundColor: '#c1c1c1',
@@ -205,13 +274,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'blue',
     },
 
-    label: {
-        height: '100%',
-        width: '50%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor: 'red',
-    },
+  
 
     notification: {
         height: '100%',
@@ -335,18 +398,18 @@ const styles = StyleSheet.create({
 
     seats: {
         height: '100%',
-        width: '15%',
+        width: '10%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
 
     date: {
         height: '100%',
-        width: '15%',
+        width: '23%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
 
     bot: {
@@ -391,6 +454,59 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+
+ 
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        height: '100%',
+        width: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      departureDate: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        padding: 10,
+        marginBottom: 20,
+      },
+      modalContainer: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 10,
+        marginTop: '30%',
+        marginHorizontal: 20,
+        elevation: 5,
+      },
+      modalItem: {
+        fontSize: 16,
+        marginTop:'5%',
+        borderTopColor:'#000000'
+      },
+      modalItemSpacer:{
+        height:'15%',
+      },
+      radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+      },
+      radioButtonInner: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'black',
+        marginRight: 10,
+      },
+      radioButtonSelected: {
+        backgroundColor: 'blue', // Change to whatever color you want when selected
+      },
+      dayText: {
+        fontSize: 16,
+      },
+  
 
 });

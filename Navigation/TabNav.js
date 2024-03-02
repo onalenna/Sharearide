@@ -2,11 +2,10 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, SimpleLineIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import Home from "../Screens/Home";
-import Buses from "../Screens/Buses";
-import Profile from "../Screens/Profile";
-import Settings from "../Screens/Settings";
-import { color } from '@rneui/base';
 import UserNav from './UserNav';
+import ProfNav from './ProfNav';
+import SettingNav from './SettingNav';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -65,8 +64,9 @@ export default function TabNav() {
           )
         }}
       />
+      
       <Tab.Screen
-        name="Settings"
+        name="Setting"
         component={Sett}
         options={{
           headerShown: false,
@@ -93,11 +93,11 @@ function Activity() {
 }
 
 function Prof() {
-  return <Profile />;
+  return <ProfNav />;
 }
 
 function Sett() {
-  return <Settings />;
+  return <SettingNav />;
 }
 
 

@@ -1,47 +1,39 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions, Share, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import * as Linking from 'expo-linking';
+import { View, Text, StyleSheet, Dimensions, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { Ionicons, AntDesign, MaterialIcons} from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const DATA = [
     {
-        id: '1',
-        title: 'Privacy Policy',
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        icon: 'user',
+        title: 'Profile',
     },
     {
-        id: '2',
-        title: 'Terms & Conditions',
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        icon: 'tago',
+        title: 'Bookings',
     },
     {
-        id: '3',
-        title: 'FAQ & Support',
-    },
-    {
-        id: '4',
-        title: 'About',
-    },
-    {
-        id: '6',
-        title: 'Share',
-    },
-    {
-        id: '7',
-        title: 'Notifications',
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f69',
+        icon: 'creditcard',
+        title: 'Payments',
     },
 
 
 ];
 
+
 const separator = () => {
     return (
-        <View style={{ borderBottomWidth: 0.3, width: '85%', alignSelf: 'center', borderColor: "#c1c1c1" }} />
+        <View style={{ borderBottomWidth: 0.3, width: '85%', alignSelf: 'center', borderColor: '#c1c1c1' }} />
     )
 };
 
 
-export default class Settings extends React.Component {
+export default class Profile extends React.Component {
 
     constructor(props) {
         super(props);
@@ -49,58 +41,42 @@ export default class Settings extends React.Component {
 
         }
     }
-    
+
     onClick(i) {
         if (i == 0) {
-            Linking.openURL('https://web.dev.sharearide.co.bw/privacy_policy');
+           this.props.navigation.navigate('UserPro')
         }
         if (i == 1) {
-            Linking.openURL('https://web.dev.sharearide.co.bw/terms_conditions');
-        }
-        if (i == 2) {
-            this.props.navigation.navigate('Faq')
-        }
-        if (i == 3) {
-            this.props.navigation.navigate('About')
-        }
-        if (i == 4) {
-            this.onShare()
-        }
-        if (i == 5) {
-            this.props.navigation.navigate('Notifications')
-        }
+            this.props.navigation.navigate('Bookings')
+         }
     }
 
-    onShare = async () => {
-        try {
-          const result = await Share.share({
-            message:
-              'Sharearide is a revolutionary mobile application designed to simplify and streamline the process of booking buses. *Link to app store goes here*',
-          });
-          if (result.action === Share.sharedAction) {
-            if (result.activityType) {
-              // shared with activity type of result.activityType
-            } else {
-              // shared
+    async logout(){
+      
+            try {
+                this.props.navigation.navigate('SignIn')
+                await AsyncStorage.removeItem(key);
+               
+                return true;
             }
-          } else if (result.action === Share.dismissedAction) {
-            // dismissed
-          }
-        } catch (error) {
-          Alert.alert(error.message);
-        }
-      };
+            catch(exception) {
+                return false;
+            }
+        
+    }
 
 
     render() {
         return (
+
+
             <View style={styles.container}>
                 <View style={styles.top}>
                     <View style={styles.back}>
                         <Ionicons name="ios-chevron-back" size={30} color="#707070" />
                     </View>
                     <View style={styles.label}>
-                        <Text>Settings</Text>
+                        <Text>Account</Text>
                     </View>
                     <View style={styles.notification}>
                         <Ionicons name="md-notifications-outline" size={20} color="#707070" />
@@ -114,11 +90,14 @@ export default class Settings extends React.Component {
                         keyExtractor={item => item.id}
                         renderItem={({ item, index }) => {
                             return (
-                                <TouchableOpacity onPress={() => this.onClick(index)} style={styles.flatItem}>
+                                <TouchableOpacity onPress={()=> this.onClick(index)} style={styles.flatItem}>
+                                    <View style={styles.icon}>
+                                        <AntDesign name={item.icon} size={19} color="#707070" />
+                                    </View>
                                     <View style={styles.item}>
                                         <Text style={{ fontSize: 16 }}>{item.title}</Text>
                                     </View>
-                                    <View style={styles.icon}>
+                                    <View style={styles.icon2}>
                                         <MaterialIcons name={'keyboard-arrow-right'} size={25} color="#707070" />
                                     </View>
                                 </TouchableOpacity>
@@ -126,6 +105,11 @@ export default class Settings extends React.Component {
                         }}
                     />
                 </SafeAreaView>
+                <View style={styles.bot}>
+                    <TouchableOpacity onPress={()=> this.logout()} style={styles.but}>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>LOGOUT</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
         )
@@ -175,7 +159,7 @@ const styles = StyleSheet.create({
     },
 
     mid: {
-        height: '90%',
+        height: '80%',
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
@@ -186,8 +170,15 @@ const styles = StyleSheet.create({
         height: 45,
         width: 330,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'center'
+    },
+
+    icon: {
+        height: '100%',
+        width: '20%',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingRight: '4%',
     },
 
     item: {
@@ -196,10 +187,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    icon: {
+    icon2: {
         height: '100%',
         width: '20%',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        paddingRight: '5%',
     },
+
+    bot: {
+        height: '10%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    but: {
+        height: 43,
+        width: 286,
+        borderRadius: 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#429588'
+    }
+
+
+
+
 });
