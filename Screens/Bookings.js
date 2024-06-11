@@ -1,8 +1,9 @@
-import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, Image, TextInput, StyleSheet, Dimensions, Pressable, FlatList, SafeAreaView, TouchableOpacity,Platform } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect ,Component} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 
@@ -237,7 +238,8 @@ const styles = StyleSheet.create({
     },
 
     booking: {
-        height: 100,
+        
+        height: 150,
         width: 300,
         borderRadius: 23,
         margin: '5%',

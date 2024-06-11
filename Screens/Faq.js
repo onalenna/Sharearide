@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Dimensions, Pressable, SafeAreaView, FlatList, Linking, Image, TextInput, KeyboardAvoidingView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import CollapsibleView from "@eliav2/react-native-collapsible-view";
+import axios from 'axios';
 
 
 const windowWidth = Dimensions.get('window').width;

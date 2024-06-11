@@ -1,10 +1,11 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, Image,TouchableOpacity,Alert } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Pressable, Image,TouchableOpacity,Alert,Platform } from "react-native";
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import RadioButtonRN from 'radio-buttons-react-native';
 // import RadioGroup from 'react-native-radio-buttons-group';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 
@@ -26,14 +27,22 @@ const colors = [
 ]
 
 export default function Ticket() {
+    //const route = useRoute();
+    //const { tripDetails ,occupantNames,chosenDate} = route.params;
+
+   // const route = useRoute();
+    //const { tripDetails ,occupantNames, chosenDate} = route.params;
+
     const route = useRoute();
-    const { tripDetails ,occupantNames,selectedDay} = route.params;
+ //   const { tripDetails ,occupantNames, chosenDate, totalFare } = route.params;
+    const { tripDetails = {}, occupantNames = {}, chosenDate = "", totalFare = 0 } = route.params || {};
+
+    //console.log(tripDetails);
 
    // console.log(tripDetails);
     const [username, setUsername] = useState("");
     const [lname, setUserLname] = useState("");
     const [email, setUserEmail] = useState("");
-    const [phone, setUserPhone] = useState("");
     const navigation = useNavigation();
     const generateTicketID = () => {
         // Get today's date, month, and day
@@ -46,12 +55,12 @@ export default function Ticket() {
         const userInitials = (username.charAt(0) + lname.charAt(0)).toUpperCase();
     
         // Get first characters of start city and end city
-        const startCityInitial = tripDetails.start_city.charAt(0);
-        const endCityInitial = tripDetails.end_city.charAt(0);
+      //  const startCityInitial = tripDetails.start_city.charAt(0);
+        //const endCityInitial = tripDetails.end_city.charAt(0);
     
         // Format the ticket ID string
-        const ticketID = `${date}${month}${day}-${userInitials}-${startCityInitial}${endCityInitial}`;
-    
+      //  const ticketID = `${date}${month}${day}-${userInitials}-${startCityInitial}${endCityInitial}`;
+        const ticketID="";
         return ticketID;
     };
     const [paymentOption, setPaymentOption] = useState(null);
@@ -63,7 +72,7 @@ export default function Ticket() {
             Alert.alert('Success', 'Booking successful!');
             navigation.navigate('Profile',{screen: 'Bookings'});
         } else if (paymentOption === 'option1') { // Debit/Credit Card selected
-            navigation.navigate('Cards', { tripDetails, occupantNames, selectedDay });
+            navigation.navigate('Cards', { tripDetails, occupantNames, chosenDate });
         }
     };*/
 
@@ -82,9 +91,10 @@ export default function Ticket() {
         } else if (paymentOption === 'option2') { // Cash selected
             try {
                 const payload = {
-                    booking_date: tripDetails.booking_date,
+                    // Your payload data here...
+                    booking_date: chosenDate,
                     bus_fare: tripDetails.busfare,
-                    bus_sub_route_id: tripDetails.bus_sub_route_id,
+                  //  bus_sub_route_id: tripDetails.bus_sub_route_id,
                     selected_seats: selectedSeatsString,
                     bus_id: tripDetails.bus_id,
                     bus_route_id: tripDetails.bus_route_id,
@@ -92,39 +102,37 @@ export default function Ticket() {
                     arrival_sequence_number:tripDetails.arrival_sequence_number,
                     departure_sequence_number:tripDetails.departure_sequence_number
                 };
-                // Send data to the server
                 const response = await fetch('https://propiq.tech/SR/bookSeats.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
+                    
                 });
-               /* if (response.ok) {
-                    Alert.alert('Success', 'Booking successful!');
-                    navigation.navigate('Profile', { screen: 'Bookings' });
-                } else {
-                    throw new Error(response + 'Failed to book seats');
-                }*/
-
+    
                 if (response.ok) {
-                    Alert.alert('Success', 'Booking successful!');
-                    navigation.navigate('Profile', { 
-                        screen: 'Bookings', 
-                        params: { user_email: email } // Pass user_email value
-                    });
+                    const result = await response.json(); // Parse response JSON
+                    if (result.status === 'ok') {
+                        console.log(payload)
+                        Alert.alert('Success', 'Booking successful!');
+                        navigation.navigate('Profile', { screen: 'Bookings' });
+                    } else {
+                        Alert.alert('Failed', result.text); // Show failure message from PHP script
+                    }
                 } else {
-                    throw new Error('Failed to book seats');
+                    throw new Error('Network response was not ok');
                 }
-                
             } catch (error) {
                 console.error('Error:', error);
                 Alert.alert('Error', 'Failed to book seats. Please try again.');
             }
         } else if (paymentOption === 'option1') { // Debit/Credit Card selected
-            navigation.navigate('Cards', { tripDetails, occupantNames, selectedDay });
+           // navigation.navigate('Cards', { tripDetails, occupantNames, chosenDate });
+           Alert.alert('Online Payments are currently unavailable');
         }
     };
+    
     
     
     useEffect(() => {
@@ -132,22 +140,20 @@ export default function Ticket() {
        // console.log("Occupant Names:", occupantNames); // Log occupant names
         //console.log("Number of Occupants:", Object.keys(occupantNames).length); // Log number of occupants
 
-        const totalFare = tripDetails.busfare * Object.keys(occupantNames).length;
+        //const totalFare = tripDetails.busfare * Object.keys(occupantNames).length;
 
 
     },[occupantNames]);
 
     getAsync = async () => {
         try {
-            const name = await AsyncStorage.getItem('name')
-            const lname = await AsyncStorage.getItem('lname')
+            const name = await AsyncStorage.getItem('firstName')
+            const lname = await AsyncStorage.getItem('lastName')
             const email = await AsyncStorage.getItem('email')
-            const phone = await AsyncStorage.getItem('phone')
 
             setUsername(name)
             setUserLname(lname)
             setUserEmail(email)
-            setUserPhone(phone)
 
            // console.log("console " + phone, email)
         }
@@ -167,13 +173,13 @@ export default function Ticket() {
         <View style={styles.container}>
             <View style={styles.top}>
                 <Pressable onPress={() => navigation.goBack()} style={styles.back}>
-                    <Ionicons name="ios-chevron-back" size={30} color="#707070" />
+                    <Ionicons name="chevron-back" size={30} color="#707070" />
                 </Pressable>
                 <View style={styles.label}>
                     <Text>Ticket</Text>
                 </View>
                 <View style={styles.notification}>
-                    <Ionicons name="md-notifications-outline" size={20} color="#707070" />
+                    <Ionicons name="notifications-outline" size={20} color="#707070" />
                 </View>
             </View>
             <View style={styles.mid}>
@@ -194,7 +200,7 @@ export default function Ticket() {
                     </View>
                     <View style={styles.tic2}>
                         <View style={styles.departure}>
-                            <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.start_city}</Text>
+                            <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.startCity}</Text>
                             <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{tripDetails.departure}</Text>
                         </View>
                         <View style={styles.froTo}>
@@ -203,14 +209,14 @@ export default function Ticket() {
                             <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
                         </View>
                         <View style={styles.destination}>
-                            <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.end_city}</Text>
+                            <Text style={{ fontSize: 12, color: '#707070', }}>{tripDetails.endCity}</Text>
                             <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{tripDetails.arrival}</Text>
                         </View>
                     </View>
                     <View style={styles.tic3}>
                         <View style={styles.date}>
                             <Text style={{ fontSize: 12, color: '#707070', }}>Travel Day</Text>
-                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{selectedDay}</Text>
+                            <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{chosenDate}</Text>
                         </View>
                         <View style={styles.seat}>
                         <View style={{ height: '60%', width: '65%', borderRadius: 12, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
@@ -233,7 +239,6 @@ export default function Ticket() {
                             <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{username}  {lname}</Text>
                         </View>
                         <View style={styles.ticID}>
-                            <Text style={{ fontSize: 12, color: '#707070' }}>Ticket ID</Text>
                             <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>
                                 {generateTicketID()}
                             </Text>
@@ -242,18 +247,14 @@ export default function Ticket() {
 
                     </View>
                     <View style={styles.ticBot}>
-                        <View style={styles.passengers}>
-                            <Text style={{ fontSize: 12, color: '#707070', }}>Passenger(s)</Text>
-                            <View style={styles.passengers}>
-                                {Object.values(occupantNames).map((name, index) => (
-                                    <Text key={index} style={{ fontSize: 12, color: '#707070', fontWeight: 'bold',marginTop:4 }}>{name}</Text>
-                                ))}
-                            </View>
+                    <View style={styles.passengers}>
+                        <Text style={{ fontSize: 12, color: '#707070' }}>Passenger(s)</Text>
+                        {Object.values(occupantNames).map((name, index) => (
+                            <Text key={index} style={{ fontSize: 12, color: '#707070', fontWeight: 'bold', marginTop: 4 }}>{name}</Text>
+                        ))}
+                    </View>
 
-                        </View>
-                        <View style={styles.barcode}>
-                            <Image style={{ height: '80%', width: '100%' }} source={require('../assets/barcode.png')} />
-                        </View>
+                        
                     </View>
                 </View>
                 <View style={styles.payOpt}>
@@ -509,6 +510,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#429588'
+    },
+
+    button:{
+        height: 43,
+        width: 286,
+        borderRadius: 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#429588'
+
     }
 
 

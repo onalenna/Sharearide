@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Image, TextInput, Pressable, } from
 import { CheckBox } from '@rneui/themed';
 import Swiper from 'react-native-swiper'
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -37,9 +38,58 @@ export default class Register extends Component {
         }
     }
 
+  /*  press() {
+        if (!this.validateFields()) {
+            alert('Please fill all visible form fields before continuing.');
+            return;
+        }
+        console.warn('continue button is pressed');
+        // Proceed with other actions if all required fields are filled
+    }*/
+
     press() {
-        console.warn('continue button is pressed')
+        if (!this.validateFields()) {
+            alert('Please fill all visible form fields before continuing.');
+            return;
+        }
+    
+        const { firstname, lastname, gender, email, number, password } = this.state;
+    
+        // Construct the data object to be sent to the server
+        const data = {
+            firstname: firstname,
+            lastname: lastname,
+            gender: gender,
+            email: email,
+            number: number,
+            password: password
+        };
+    
+        fetch('https://propiq.tech/SR/register.php', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(responseJson => {
+            // Handle the response from the server
+            console.log('Registration response:', responseJson);
+            // You can navigate to the next screen or perform any other action based on the response
+            alert("Registered Successfully");
+            this.props.navigation.navigate('Login');
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here
+            alert(error);
+        });
     }
+    
+    
 
     validateFields = () => {
         const { firstname, lastname, gender, email, number, password } = this.state;
@@ -148,7 +198,7 @@ export default class Register extends Component {
                                 <View style={{ flex: 1, padding: '8%' }}>
                                     <View style={{ height: '33%', justifyContent: 'center', }}>
                                         <Text style={{ fontSize: 26, fontWeight: '400', color: '#707070', paddingBottom: '2%' }}>Verify your number</Text>
-                                        <Text style={{ fontSize: 14, color: '#707070' }}>Enter code sent to 72 123 456</Text>
+                                        <Text style={{ fontSize: 14, color: '#707070' }}>Enter code sent to your number</Text>
                                     </View>
                                     <View style={styles.otpCon}>
                                         <View style={styles.otpSqr}>
@@ -225,9 +275,16 @@ export default class Register extends Component {
                             </View>
 
                             <View style={styles.midbtn}>
-                                <Pressable onPress={() => this.props.navigation.navigate('Landing')} disabled={this.state.disabled} style={[styles.btn, { opacity: this.state.opacity }]}>
-                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
-                                </Pressable>
+                            <Pressable
+                                onPress={() => {
+                                    this.press(); // Call the press method to handle form validation and registration
+                                }}
+                                disabled={this.state.disabled}
+                                style={[styles.btn, { opacity: this.state.opacity }]}
+                            >
+                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#ffffff' }}>Continue</Text>
+                            </Pressable>
+
 
                                 <CheckBox
                                     containerStyle={{ width: '85%' }}

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Pressable, Image, SafeAreaView, FlatList, TouchableOpacity, Alert } from "react-native";
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from 'axios';
 
 
 const windowWidth = Dimensions.get('window').width;

@@ -3,10 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthNav from "./Navigation/AuthNav";
 import TabNav from "./Navigation/TabNav";
+import axios from "axios";
 
 
 const Stack = createNativeStackNavigator();
-
+axios.defaults.baseURL = "https://api.dev.sharearide.co.bw/app/uaa/v1"
 
 
 export default function App() {

@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, StyleSheet, Dimensions,Pressable, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions, Pressable, TouchableOpacity, FlatList, Platform } from "react-native";
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import axios from 'axios';
+import { FontAwesome } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,19 +12,38 @@ export default function Buses() {
     const navigation = useNavigation();
     const [tripData, setTripData] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
-
+    const formatTime = (minutes) => {
+        const hrs = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        if (hrs > 0) {
+            return `${hrs} hr${hrs > 1 ? 's' : ''} ${mins > 0 ? `${mins} min${mins > 1 ? 's' : ''}` : ''}`;
+        } else {
+            return `${mins} min${mins > 1 ? 's' : ''}`;
+        }
+    };
+    
     React.useEffect(() => {
         setLoading(true);
-        fetch('https://propiq.tech/SR/routes.php')
-            .then(response => response.json())
-            .then(data => {
-                // Filter out duplicate keys
-                const filteredData = data.filter((item, index, self) =>
-                    index === self.findIndex(t => (
-                        t.uuid === item.uuid
-                    ))
-                );
+        axios.get('https://api.dev.sharearide.co.bw/app/v1/bus/routes/all/0/100')
+            .then(response => {
+                const filteredData = response.data.data.map(item => ({
+                    id: item.uuid,
+                    uuid: item.uuid,
+                    regNo: item.Bus.regNo,
+                    company: item.Bus.company,
+                    image: `data:image/jpeg;base64,${item.Bus.image.data.toString('base64')}`,
+                    startCity: item.Route.name.split(" - ")[0],
+                    departure: item.departure,
+                    endCity: item.Route.name.split(" - ")[1],
+                    arrival: item.arrival,
+                    busfare: item.fare,
+                    distance: item.Route.distance,
+                    totalSeats: item.Bus.totalSeats,
+                    allowedDays: item.allowedDays,
+                    approximate_time1: item.Route.approximateTime
+                }));
                 setTripData(filteredData);
+               // console.log(filteredData);
                 setLoading(false);
             })
             .catch(error => {
@@ -34,16 +55,15 @@ export default function Buses() {
     return (
         <View style={styles.container}>
             <View style={styles.top}>
-               
                 <Pressable onPress={() => navigation.goBack()} style={styles.back}>
-                        <Ionicons name="ios-chevron-back" size={30} color="#707070" />
-                    </Pressable>
+                    <Ionicons name="chevron-back" size={30} color="#707070" />
+                </Pressable>
 
                 <View style={styles.label}>
                     <Text>Available Trips</Text>
                 </View>
                 <View style={styles.notification}>
-                    <Ionicons name="md-notifications-outline" size={20} color="#707070" />
+                    <Ionicons name="notifications-outline" size={20} color="#707070" />
                 </View>
             </View>
             <View style={styles.bot}>
@@ -56,14 +76,14 @@ export default function Buses() {
                         keyExtractor={item => item.uuid}
                         renderItem={({ item }) => (
                             
-                            <TouchableOpacity  onPress={() => navigation.navigate('Details', { tripDetails: item })} style={styles.flatItem}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Details', { tripDetails: item })} style={styles.flatItem}>
                                 <View style={styles.cardtop}>
                                     <View style={styles.logo}>
                                         <Image style={{ height: 38, width: 38, borderRadius: 19, alignSelf: 'center' }} source={{ uri: item.image }} />
                                     </View>
                                     <View style={styles.title}> 
                                         <Text style={{ fontSize: 15, color: '#707070' }}>{item.company}</Text> 
-                                        <Text style={{ fontSize: 10, color: '#707070' }}> Registration : {item.reg_no}</Text> 
+                                        <Text style={{ fontSize: 10, color: '#707070' }}> Registration : {item.regNo}</Text> 
                                     </View>
                                     <View style={styles.price}>
                                         <View style={{ height: 27, width: 83, borderRadius: 18, backgroundColor: '#429588', justifyContent: 'center', alignItems: 'center' }}>
@@ -73,7 +93,7 @@ export default function Buses() {
                                 </View>
                                 <View style={styles.cardmid}>
                                     <View style={styles.departure}> 
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>From : {item.start_city}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}>From : {item.startCity}</Text>
                                         <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{item.departure}</Text>
                                     </View>
                                     <View style={styles.froTo}>
@@ -82,26 +102,33 @@ export default function Buses() {
                                         <View style={{ height: 10, width: 10, borderRadius: 5, borderColor: '#FA8072', borderWidth: 1 }} />
                                     </View>
                                     <View style={styles.destination}>   
-                                        <Text style={{ fontSize: 12, color: '#707070' }}> To:  {item.end_city}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}> To:  {item.endCity}</Text>
                                         <Text style={{ fontSize: 12, color: '#707070', fontWeight: 'bold' }}>{item.arrival}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.cardbot}>
-                                    <View style={styles.time}> 
-                                        <FontAwesome5 name='clock' size={20} color='#FA8072' />
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>{(item.approximate_time1)}</Text>
+                                <View style={styles.time}>
+                                    <FontAwesome5 name='clock' size={20} color='#FA8072' />
+                                    <Text style={{ fontSize: 12, color: '#707070' }}>{formatTime(item.approximate_time1)}</Text>
+                                </View>
 
-                                    </View>
                                     <View style={styles.distance}>
                                         <MaterialCommunityIcons name='map-marker-distance' size={20} color='#FA8072' />
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.distance}km`}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.distance} km`}</Text>
                                     </View>
                                     <View style={styles.seats}> 
                                         <MaterialCommunityIcons name='seat' size={20} color='#FA8072' />
-                                        <Text style={{ fontSize: 12, color: '#707070' }}>{`${item.total_seats}`}</Text>
+                                        <Text style={{ fontSize: 12, color: '#707070' }}>{item.totalSeats}</Text>
                                     </View>
                                     <View style={styles.date}>
-                                        <Text style={{ fontSize: 10, color: '#707070' }}>{item.allowed_days}</Text> 
+                                        <Text style={{ fontSize: 10, color: '#707070' }}>
+                                            {(() => {
+                                                const daysArray = item.allowedDays.split(',').map(day => day.trim());
+                                                return daysArray.length === 7 
+                                                    ? 'everyday' 
+                                                    : daysArray.map(day => day.substring(0, 3)).join(', ');
+                                            })()}
+                                        </Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -112,7 +139,6 @@ export default function Buses() {
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -125,7 +151,6 @@ const styles = StyleSheet.create({
     },
 
     top: {
-        // backgroundColor: '#c1c1c1',
         height: '10%',
         width: '100%',
         justifyContent: 'center',
@@ -138,7 +163,6 @@ const styles = StyleSheet.create({
         width: '25%',
         justifyContent: 'center',
         paddingLeft: '5%',
-        // backgroundColor: 'blue',
     },
 
     label: {
@@ -146,7 +170,6 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'red',
     },
 
     notification: {
@@ -154,16 +177,13 @@ const styles = StyleSheet.create({
         width: '25%',
         justifyContent: 'center',
         alignItems: 'center',
-        //backgroundColor: 'green',
     },
 
     bot: {
-        //backgroundColor: '#707070',
         height: '90%',
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-
     },
 
     flatItem: {
@@ -187,14 +207,12 @@ const styles = StyleSheet.create({
     },
 
     cardtop: {
-        //backgroundColor: 'green',
         height: '30%',
         width: '100%',
         flexDirection: 'row'
     },
 
     logo: {
-        //  backgroundColor: 'blue',
         height: '100%',
         width: '15%',
         alignItems: 'center',
@@ -202,14 +220,12 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        // backgroundColor: 'red',
         height: '100%',
         width: '50%',
         justifyContent: 'center'
     },
 
     price: {
-        //backgroundColor: 'pink',
         height: '100%',
         width: '35%',
         alignItems: 'center',
@@ -217,7 +233,6 @@ const styles = StyleSheet.create({
     },
 
     cardmid: {
-        //backgroundColor: 'blue',
         height: '50%',
         width: '100%',
         flexDirection: 'row'
@@ -292,6 +307,5 @@ const styles = StyleSheet.create({
         backgroundColor:'#fffeee',
         padding:8,
         borderRadius:10,
-
     }
 });

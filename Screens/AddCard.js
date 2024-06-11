@@ -1,8 +1,9 @@
 
 import React, { useMemo, useState, useNavigation } from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Pressable, Image, TextInput, ScrollView, TouchableOpacity, Platform } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
 
 
 
